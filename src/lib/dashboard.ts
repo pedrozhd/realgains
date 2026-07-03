@@ -78,12 +78,24 @@ export function shouldAlertarProximoDoLimite(reps: number, repMax: number): bool
   return reps === repMax - 1;
 }
 
-export interface DashboardExercicioVM {
-  treinoExercicioId: string;
-  exercicioId: string;
+export interface ResumoExercicio {
   nome: string;
   ultimaSerieLabel: string;
   tendencia: Tendencia | null;
+}
+
+export function getResumoExercicio(nome: string, seriesDoExercicio: Serie[]): ResumoExercicio {
+  const ultima = getUltimaSerie(seriesDoExercicio);
+  return {
+    nome,
+    ultimaSerieLabel: ultima ? `${formatCarga(ultima.carga)} kg × ${ultima.reps}` : "Sem registros",
+    tendencia: getTendencia(seriesDoExercicio),
+  };
+}
+
+export interface DashboardExercicioVM extends ResumoExercicio {
+  treinoExercicioId: string;
+  exercicioId: string;
 }
 
 export interface DashboardVM {
@@ -110,13 +122,10 @@ export function getDashboardData(
   const exerciciosVM: DashboardExercicioVM[] = exerciciosDoTreino.map((te) => {
     const exercicio = exercicios.find((e) => e.id === te.exercicio_id);
     const seriesDoExercicio = series.filter((s) => s.exercicio_id === te.exercicio_id);
-    const ultima = getUltimaSerie(seriesDoExercicio);
     return {
       treinoExercicioId: te.id,
       exercicioId: te.exercicio_id,
-      nome: exercicio?.nome ?? "Exercício",
-      ultimaSerieLabel: ultima ? `${formatCarga(ultima.carga)} kg × ${ultima.reps}` : "Sem registros",
-      tendencia: getTendencia(seriesDoExercicio),
+      ...getResumoExercicio(exercicio?.nome ?? "Exercício", seriesDoExercicio),
     };
   });
 

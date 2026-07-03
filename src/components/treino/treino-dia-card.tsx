@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+import { Pencil } from "lucide-react";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
 import { TreinoExercicioRow } from "@/components/treino/treino-exercicio-row";
 import type { TreinoExercicioComExercicio } from "@/lib/types";
@@ -33,6 +37,8 @@ export function TreinoDiaCard({
   onMoveExercicio,
   onRemoveExercicio,
 }: TreinoDiaCardProps) {
+  const [editandoNome, setEditandoNome] = useState(false);
+
   return (
     <section className="rounded-2xl border border-border bg-card p-3.5">
       <div className="flex items-center gap-1.5">
@@ -56,12 +62,27 @@ export function TreinoDiaCard({
             ▼
           </button>
         </div>
-        <BlurCommitInput
-          value={nome}
-          onCommit={onRename}
-          placeholder="Nome do treino"
-          className="h-auto flex-1 border-none bg-transparent px-0 py-1.5 text-[17px] font-bold shadow-none focus-visible:ring-0"
-        />
+
+        {editandoNome ? (
+          <BlurCommitInput
+            value={nome}
+            onCommit={onRename}
+            onBlur={() => setEditandoNome(false)}
+            placeholder="Nome do treino"
+            autoFocus
+            className="h-auto flex-1 border-none bg-transparent px-0 py-1.5 text-[17px] font-bold shadow-none focus-visible:ring-0"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setEditandoNome(true)}
+            className="flex flex-1 items-center gap-1.5 overflow-hidden py-1.5 text-left"
+          >
+            <span className="truncate text-[17px] font-bold">{nome || "Nome do treino"}</span>
+            <Pencil size={14} className="shrink-0 text-muted-foreground" />
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onRemoveDia}

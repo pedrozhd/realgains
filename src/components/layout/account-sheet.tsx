@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { BlurCommitInput } from "@/components/ui/blur-commit-input";
 import {
   Sheet,
   SheetContent,
@@ -17,9 +18,11 @@ interface AccountSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   email: string | null;
+  nome: string | null;
+  onUpdateNome: (nome: string) => void;
 }
 
-export function AccountSheet({ open, onOpenChange, email }: AccountSheetProps) {
+export function AccountSheet({ open, onOpenChange, email, nome, onUpdateNome }: AccountSheetProps) {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const [copiado, setCopiado] = useState(false);
@@ -54,6 +57,16 @@ export function AccountSheet({ open, onOpenChange, email }: AccountSheetProps) {
           <SheetTitle>Conta</SheetTitle>
           <SheetDescription>{email ?? "—"}</SheetDescription>
         </SheetHeader>
+
+        <div className="flex flex-col gap-2 px-4">
+          <p className="text-[11px] font-bold tracking-widest text-muted-foreground">SEU NOME</p>
+          <BlurCommitInput
+            value={nome ?? ""}
+            onCommit={onUpdateNome}
+            placeholder="Como quer ser chamado?"
+            className="h-11 rounded-xl border-border bg-background px-3 text-sm"
+          />
+        </div>
 
         <div className="flex flex-col gap-2 px-4">
           <p className="text-[11px] font-bold tracking-widest text-muted-foreground">TOKEN DO SHORTCUT</p>

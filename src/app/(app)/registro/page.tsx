@@ -68,11 +68,15 @@ export default function RegistroPage() {
 
   const podeSalvar = Boolean(curEx) && carga > 0 && reps > 0 && qualidade !== null;
 
-  function onSave() {
+  async function onSave() {
     if (!curEx || !podeSalvar || !qualidade) return;
-    addSerie(curEx.exercicio_id, carga, reps, qualidade);
-    setReps(0);
-    mostrarToast("Série salva ✓");
+    try {
+      await addSerie(curEx.exercicio_id, carga, reps, qualidade);
+      setReps(0);
+      mostrarToast("Série salva ✓");
+    } catch {
+      mostrarToast("Não deu pra salvar — tenta de novo");
+    }
   }
 
   if (loading) {
@@ -107,7 +111,10 @@ export default function RegistroPage() {
   const seriesDoExercicio = series.filter((s) => s.exercicio_id === curEx.exercicio_id);
   const ultima = getUltimaSerie(seriesDoExercicio);
   const hojeStr = new Date().toDateString();
-  const setsDeHoje = seriesDoExercicio.filter((s) => new Date(s.data).toDateString() === hojeStr);
+  const setsDeHoje = seriesDoExercicio
+    .filter((s) => new Date(s.data).toDateString() === hojeStr)
+    .sort((a, b) => a.data.localeCompare(b.data));
+  const numeroProximaSerie = setsDeHoje.length + 1;
   const sugereProgressao = shouldSugerirProgressao(reps, curEx.rep_max, qualidade);
 
   return (
@@ -122,9 +129,12 @@ export default function RegistroPage() {
               onSelect={selecionarExercicio}
             />
           </div>
-          <Badge variant="outline" className="w-fit">
-            {treinoDeHoje.nome.toUpperCase()}
-          </Badge>
+          <div className="flex items-center gap-1.5">
+            <Badge variant="outline" className="w-fit">
+              {treinoDeHoje.nome.toUpperCase()}
+            </Badge>
+            <Badge className="w-fit">SÉRIE {numeroProximaSerie}</Badge>
+          </div>
           <div>
             <h2 className="text-[26px] leading-[1.15] font-bold tracking-tight">{curEx.exercicio.nome}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -154,16 +164,18 @@ export default function RegistroPage() {
         )}
 
         {setsDeHoje.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold text-muted-foreground/70">Hoje:</span>
-            {setsDeHoje.map((s) => (
-              <span
-                key={s.id}
-                className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground"
-              >
-                {formatCarga(s.carga)}×{s.reps} {QUALIDADE_EMOJI[s.qualidade]}
-              </span>
-            ))}
+          <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-semibold text-muted-foreground/70">Séries de hoje:</span>
+            <div className="flex flex-wrap items-center gap-2">
+              {setsDeHoje.map((s, i) => (
+                <span
+                  key={s.id}
+                  className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground"
+                >
+                  Série {i + 1}: {formatCarga(s.carga)}kg × {s.reps} {QUALIDADE_EMOJI[s.qualidade]}
+                </span>
+              ))}
+            </div>
           </div>
         )}
       </main>

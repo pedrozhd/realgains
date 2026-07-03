@@ -1,0 +1,91 @@
+"use client";
+
+import { AppHeader } from "@/components/layout/app-header";
+import { ExercicioRow } from "@/components/dashboard/exercicio-row";
+import { getResumoExercicio } from "@/lib/dashboard";
+import { useAppStore } from "@/lib/store";
+import type { Exercicio } from "@/lib/types";
+
+export default function ExerciciosPage() {
+  const { treinos, treinoExercicios, exercicios, series, loading } = useAppStore();
+
+  if (loading) {
+    return (
+      <>
+        <AppHeader variant="title" title="Histórico" />
+        <main className="flex flex-1 items-center justify-center px-8 text-center text-[13px] text-muted-foreground">
+          Carregando...
+        </main>
+      </>
+    );
+  }
+
+  const treinosOrdenados = [...treinos].sort((a, b) => a.ordem - b.ordem);
+  const idsComTreino = new Set(treinoExercicios.map((te) => te.exercicio_id));
+
+  const grupos = treinosOrdenados
+    .map((treino) => ({
+      treino,
+      exercicios: treinoExercicios
+        .filter((te) => te.treino_id === treino.id)
+        .sort((a, b) => a.ordem - b.ordem)
+        .map((te) => exercicios.find((e) => e.id === te.exercicio_id))
+        .filter((e): e is Exercicio => e !== undefined),
+    }))
+    .filter((g) => g.exercicios.length > 0);
+
+  const semTreino = exercicios.filter((e) => !idsComTreino.has(e.id));
+
+  return (
+    <>
+      <AppHeader variant="title" title="Histórico" />
+      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+        {exercicios.length === 0 ? (
+          <p className="flex-1 py-10 text-center text-[13px] text-muted-foreground">
+            Nenhum exercício cadastrado ainda. Adicione em &ldquo;Meu Treino&rdquo;.
+          </p>
+        ) : (
+          <>
+            {grupos.map((g) => (
+              <section key={g.treino.id} className="flex flex-col gap-2.5">
+                <p className="text-[11px] font-bold tracking-widest text-muted-foreground">
+                  {g.treino.nome.toUpperCase()}
+                </p>
+                <div className="flex flex-col gap-2.5">
+                  {g.exercicios.map((ex) => (
+                    <ExercicioRow
+                      key={ex.id}
+                      exercicioId={ex.id}
+                      {...getResumoExercicio(
+                        ex.nome,
+                        series.filter((s) => s.exercicio_id === ex.id),
+                      )}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))}
+
+            {semTreino.length > 0 && (
+              <section className="flex flex-col gap-2.5">
+                <p className="text-[11px] font-bold tracking-widest text-muted-foreground">SEM TREINO ATRIBUÍDO</p>
+                <div className="flex flex-col gap-2.5">
+                  {semTreino.map((ex) => (
+                    <ExercicioRow
+                      key={ex.id}
+                      exercicioId={ex.id}
+                      {...getResumoExercicio(
+                        ex.nome,
+                        series.filter((s) => s.exercicio_id === ex.id),
+                      )}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+      </main>
+    </>
+  );
+}

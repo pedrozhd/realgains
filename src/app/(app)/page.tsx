@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
 import { AccountSheet } from "@/components/layout/account-sheet";
 import { Button } from "@/components/ui/button";
@@ -12,10 +13,10 @@ import { getDashboardData } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 
 export default function DashboardPage() {
-  const { treinos, treinoExercicios, exercicios, series, loading, userEmail } = useAppStore();
+  const { treinos, treinoExercicios, exercicios, series, loading, userEmail, nome, updateNome } = useAppStore();
   const [contaAberta, setContaAberta] = useState(false);
 
-  const userName = userEmail ? userEmail.split("@")[0] : "Você";
+  const userName = nome?.trim() ? nome.trim().split(" ")[0] : userEmail ? userEmail.split("@")[0] : "Você";
 
   return (
     <>
@@ -51,6 +52,13 @@ export default function DashboardPage() {
                     </p>
                   </section>
                 )}
+                <Link
+                  href="/exercicios"
+                  className="flex items-center justify-center gap-1 py-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"
+                >
+                  Ver todos os exercícios
+                  <ChevronRight size={16} />
+                </Link>
                 <VolumeSemanalCard dados={dashboard.volumeSemanal} />
               </>
             );
@@ -58,7 +66,13 @@ export default function DashboardPage() {
         )}
       </main>
 
-      <AccountSheet open={contaAberta} onOpenChange={setContaAberta} email={userEmail} />
+      <AccountSheet
+        open={contaAberta}
+        onOpenChange={setContaAberta}
+        email={userEmail}
+        nome={nome}
+        onUpdateNome={updateNome}
+      />
     </>
   );
 }

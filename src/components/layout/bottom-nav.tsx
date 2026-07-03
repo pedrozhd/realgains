@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CirclePlus, Dumbbell, LayoutGrid } from "lucide-react";
+import { CirclePlus, Dumbbell, History, LayoutGrid } from "lucide-react";
 
 const TABS = [
   { href: "/", label: "Dashboard", icon: LayoutGrid },
   { href: "/registro", label: "Registro", icon: CirclePlus },
   { href: "/treino", label: "Meu Treino", icon: Dumbbell },
+  { href: "/exercicios", label: "Histórico", icon: History },
 ] as const;
 
 export function BottomNav() {
@@ -15,7 +16,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="grid flex-none grid-cols-3 border-t border-border bg-background"
+      className="grid flex-none grid-cols-4 border-t border-border bg-background"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       {TABS.map(({ href, label, icon: Icon }) => {

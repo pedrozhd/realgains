@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DIAS_SEMANA } from "@/lib/semana";
 import type { Treino } from "@/lib/types";
@@ -34,9 +35,13 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
               }`}
             >
               <span className="text-[14px] font-semibold">{d.label}</span>
-              <span className={`text-[13px] ${treino ? "text-foreground" : "text-muted-foreground/70"}`}>
-                {treino ? treino.nome || "Treino sem nome" : "Descanso"}
-              </span>
+              {treino ? (
+                <Badge>{treino.nome || "Treino sem nome"}</Badge>
+              ) : (
+                <Badge variant="outline" className="text-muted-foreground">
+                  Descanso
+                </Badge>
+              )}
             </button>
           );
         })}
