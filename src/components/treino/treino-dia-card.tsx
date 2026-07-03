@@ -17,7 +17,7 @@ interface TreinoDiaCardProps {
   onRemoveDia: () => void;
   onAddExercicio: () => void;
   onRenameExercicio: (exercicioId: string, nome: string) => void;
-  onRepRangeChange: (treinoExercicioId: string, repMin: number, repMax: number) => void;
+  onSeriesConfigChange: (treinoExercicioId: string, numSeries: number, repMin: number, repMax: number) => void;
   onMoveExercicio: (treinoExercicioId: string, direction: "up" | "down") => void;
   onRemoveExercicio: (treinoExercicioId: string) => void;
 }
@@ -33,7 +33,7 @@ export function TreinoDiaCard({
   onRemoveDia,
   onAddExercicio,
   onRenameExercicio,
-  onRepRangeChange,
+  onSeriesConfigChange,
   onMoveExercicio,
   onRemoveExercicio,
 }: TreinoDiaCardProps) {
@@ -98,13 +98,15 @@ export function TreinoDiaCard({
           <TreinoExercicioRow
             key={te.id}
             nome={te.exercicio.nome}
+            numSeries={te.num_series}
             repMin={te.rep_min}
             repMax={te.rep_max}
             isFirst={i === 0}
             isLast={i === exercicios.length - 1}
             onRename={(novoNome) => onRenameExercicio(te.exercicio_id, novoNome)}
-            onRepMinChange={(v) => onRepRangeChange(te.id, v, te.rep_max)}
-            onRepMaxChange={(v) => onRepRangeChange(te.id, te.rep_min, v)}
+            onNumSeriesChange={(v) => onSeriesConfigChange(te.id, v, te.rep_min, te.rep_max)}
+            onRepMinChange={(v) => onSeriesConfigChange(te.id, te.num_series, v, te.rep_max)}
+            onRepMaxChange={(v) => onSeriesConfigChange(te.id, te.num_series, te.rep_min, v)}
             onMoveUp={() => onMoveExercicio(te.id, "up")}
             onMoveDown={() => onMoveExercicio(te.id, "down")}
             onRemove={() => onRemoveExercicio(te.id)}

@@ -41,17 +41,17 @@ export const mockExercicios: Exercicio[] = [
 ];
 
 export const mockTreinoExercicios: TreinoExercicio[] = [
-  { id: "te-1", treino_id: "treino-push", exercicio_id: "ex-supino", ordem: 0, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
-  { id: "te-2", treino_id: "treino-push", exercicio_id: "ex-desenvolvimento", ordem: 1, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
-  { id: "te-3", treino_id: "treino-push", exercicio_id: "ex-triceps-corda", ordem: 2, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
+  { id: "te-1", treino_id: "treino-push", exercicio_id: "ex-supino", ordem: 0, num_series: 4, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
+  { id: "te-2", treino_id: "treino-push", exercicio_id: "ex-desenvolvimento", ordem: 1, num_series: 3, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
+  { id: "te-3", treino_id: "treino-push", exercicio_id: "ex-triceps-corda", ordem: 2, num_series: 3, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
 
-  { id: "te-4", treino_id: "treino-pull", exercicio_id: "ex-puxada", ordem: 0, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
-  { id: "te-5", treino_id: "treino-pull", exercicio_id: "ex-remada-baixa", ordem: 1, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
-  { id: "te-6", treino_id: "treino-pull", exercicio_id: "ex-rosca-direta", ordem: 2, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
+  { id: "te-4", treino_id: "treino-pull", exercicio_id: "ex-puxada", ordem: 0, num_series: 4, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
+  { id: "te-5", treino_id: "treino-pull", exercicio_id: "ex-remada-baixa", ordem: 1, num_series: 3, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
+  { id: "te-6", treino_id: "treino-pull", exercicio_id: "ex-rosca-direta", ordem: 2, num_series: 3, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
 
-  { id: "te-7", treino_id: "treino-legs", exercicio_id: "ex-agachamento", ordem: 0, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
-  { id: "te-8", treino_id: "treino-legs", exercicio_id: "ex-leg-press", ordem: 1, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
-  { id: "te-9", treino_id: "treino-legs", exercicio_id: "ex-cadeira-extensora", ordem: 2, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
+  { id: "te-7", treino_id: "treino-legs", exercicio_id: "ex-agachamento", ordem: 0, num_series: 4, rep_min: 6, rep_max: 10, created_at: isoDaysAgo(120) },
+  { id: "te-8", treino_id: "treino-legs", exercicio_id: "ex-leg-press", ordem: 1, num_series: 3, rep_min: 8, rep_max: 12, created_at: isoDaysAgo(120) },
+  { id: "te-9", treino_id: "treino-legs", exercicio_id: "ex-cadeira-extensora", ordem: 2, num_series: 3, rep_min: 10, rep_max: 15, created_at: isoDaysAgo(120) },
 ];
 
 /**

@@ -133,7 +133,9 @@ export default function RegistroPage() {
             <Badge variant="outline" className="w-fit">
               {treinoDeHoje.nome.toUpperCase()}
             </Badge>
-            <Badge className="w-fit">SÉRIE {numeroProximaSerie}</Badge>
+            <Badge className="w-fit">
+              SÉRIE {numeroProximaSerie} DE {curEx.num_series}
+            </Badge>
           </div>
           <div>
             <h2 className="text-[26px] leading-[1.15] font-bold tracking-tight">{curEx.exercicio.nome}</h2>

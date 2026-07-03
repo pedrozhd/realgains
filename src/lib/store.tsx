@@ -36,7 +36,7 @@ interface AppStoreValue extends AppDb {
   moveTreino: (treinoId: string, direction: "up" | "down") => Promise<void>;
   addExercicioATreino: (treinoId: string) => Promise<void>;
   renameExercicio: (exercicioId: string, nome: string) => Promise<void>;
-  updateRepRange: (treinoExercicioId: string, repMin: number, repMax: number) => Promise<void>;
+  updateSeriesConfig: (treinoExercicioId: string, numSeries: number, repMin: number, repMax: number) => Promise<void>;
   removeExercicioDoTreino: (treinoExercicioId: string) => Promise<void>;
   moveExercicioDoTreino: (treinoExercicioId: string, direction: "up" | "down") => Promise<void>;
   setTreinoDoDia: (diaSemana: number, treinoId: string | null) => Promise<void>;
@@ -157,10 +157,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await refresh();
       },
 
-      async updateRepRange(treinoExercicioId, repMin, repMax) {
+      async updateSeriesConfig(treinoExercicioId, numSeries, repMin, repMax) {
         await supabase
           .from("treino_exercicios")
-          .update({ rep_min: repMin, rep_max: repMax })
+          .update({ num_series: numSeries, rep_min: repMin, rep_max: repMax })
           .eq("id", treinoExercicioId)
           .throwOnError();
         await refresh();

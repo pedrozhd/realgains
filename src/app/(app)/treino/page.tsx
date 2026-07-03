@@ -18,7 +18,7 @@ export default function MeuTreinoPage() {
     moveTreino,
     addExercicioATreino,
     renameExercicio,
-    updateRepRange,
+    updateSeriesConfig,
     removeExercicioDoTreino,
     moveExercicioDoTreino,
     setTreinoDoDia,
@@ -62,7 +62,7 @@ export default function MeuTreinoPage() {
                 onRemoveDia={() => removeTreino(treino.id)}
                 onAddExercicio={() => addExercicioATreino(treino.id)}
                 onRenameExercicio={renameExercicio}
-                onRepRangeChange={updateRepRange}
+                onSeriesConfigChange={updateSeriesConfig}
                 onMoveExercicio={moveExercicioDoTreino}
                 onRemoveExercicio={removeExercicioDoTreino}
               />

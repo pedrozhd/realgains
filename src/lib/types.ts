@@ -24,6 +24,7 @@ export interface TreinoExercicio {
   treino_id: string;
   exercicio_id: string;
   ordem: number;
+  num_series: number;
   rep_min: number;
   rep_max: number;
   created_at: string;

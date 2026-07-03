@@ -60,6 +60,7 @@ export async function GET(request: NextRequest) {
     return {
       id: te.exercicio_id,
       nome: exercicio?.nome ?? "Exercício",
+      num_series: te.num_series,
       rep_min: te.rep_min,
       rep_max: te.rep_max,
       ultima_carga: ultima?.carga ?? 0,
