@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
+import { TypographyEyebrow } from "@/components/ui/typography";
 import {
   Sheet,
   SheetContent,
@@ -59,7 +60,7 @@ export function AccountSheet({ open, onOpenChange, email, nome, onUpdateNome }: 
         </SheetHeader>
 
         <div className="flex flex-col gap-2 px-4">
-          <p className="text-[11px] font-bold tracking-widest text-muted-foreground">SEU NOME</p>
+          <TypographyEyebrow>SEU NOME</TypographyEyebrow>
           <BlurCommitInput
             value={nome ?? ""}
             onCommit={onUpdateNome}
@@ -69,7 +70,7 @@ export function AccountSheet({ open, onOpenChange, email, nome, onUpdateNome }: 
         </div>
 
         <div className="flex flex-col gap-2 px-4">
-          <p className="text-[11px] font-bold tracking-widest text-muted-foreground">TOKEN DO SHORTCUT</p>
+          <TypographyEyebrow>TOKEN DO SHORTCUT</TypographyEyebrow>
           <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2.5">
             <span className="flex-1 truncate font-mono text-xs text-muted-foreground">
               {token ?? "Carregando..."}

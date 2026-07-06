@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
+
+const publicSans = Public_Sans({
+  variable: "--font-public-sans",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "RealGains",
@@ -20,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="h-full antialiased">
+    <html lang="pt-BR" className={`${publicSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-black">{children}</body>
     </html>
   );

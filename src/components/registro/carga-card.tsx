@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { TypographyEyebrow } from "@/components/ui/typography";
 
 const PASSO_CARGA = 2.5;
 
@@ -10,7 +11,7 @@ interface CargaCardProps {
 export function CargaCard({ carga, onChange }: CargaCardProps) {
   return (
     <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
-      <p className="text-[11px] font-bold tracking-widest text-muted-foreground">CARGA (KG)</p>
+      <TypographyEyebrow>CARGA (KG)</TypographyEyebrow>
       <div className="flex items-stretch gap-2.5">
         <button
           type="button"

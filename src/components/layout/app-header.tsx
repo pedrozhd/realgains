@@ -4,6 +4,7 @@ interface AppHeaderProps {
   variant: "dashboard" | "title" | "back";
   title?: string;
   backHref?: string;
+  onBack?: () => void;
   userName?: string;
   onAvatarClick?: () => void;
 }
@@ -12,6 +13,7 @@ export function AppHeader({
   variant,
   title,
   backHref = "/",
+  onBack,
   userName = "Você",
   onAvatarClick,
 }: AppHeaderProps) {
@@ -36,15 +38,18 @@ export function AppHeader({
   }
 
   if (variant === "back") {
+    const backButtonClassName = "-ml-1 flex h-9 w-9 shrink-0 items-center justify-center text-xl";
     return (
       <header className="flex flex-none items-center gap-2 px-5 pt-5 pb-3.5">
-        <Link
-          href={backHref}
-          aria-label="Voltar"
-          className="-ml-1 flex h-9 w-9 shrink-0 items-center justify-center text-xl"
-        >
-          ←
-        </Link>
+        {onBack ? (
+          <button type="button" onClick={onBack} aria-label="Voltar" className={backButtonClassName}>
+            ←
+          </button>
+        ) : (
+          <Link href={backHref} aria-label="Voltar" className={backButtonClassName}>
+            ←
+          </Link>
+        )}
         <h1 className="flex-1 truncate text-[17px] font-bold tracking-tight">{title}</h1>
       </header>
     );

@@ -1,4 +1,5 @@
 import { ExercicioRow } from "@/components/dashboard/exercicio-row";
+import { TypographyEyebrow } from "@/components/ui/typography";
 import type { DashboardExercicioVM } from "@/lib/dashboard";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 export function ExercicioGrid({ exercicios }: Props) {
   return (
     <section className="flex flex-col gap-2.5">
-      <p className="text-[11px] font-bold tracking-widest text-muted-foreground">EXERCÍCIOS DE HOJE</p>
+      <TypographyEyebrow>EXERCÍCIOS DE HOJE</TypographyEyebrow>
       <div className="flex flex-col gap-2.5">
         {exercicios.map((ex) => (
           <ExercicioRow

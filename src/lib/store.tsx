@@ -35,10 +35,12 @@ interface AppStoreValue extends AppDb {
   removeTreino: (treinoId: string) => Promise<void>;
   moveTreino: (treinoId: string, direction: "up" | "down") => Promise<void>;
   addExercicioATreino: (treinoId: string) => Promise<void>;
+  vincularExercicioExistente: (treinoId: string, exercicioId: string) => Promise<void>;
   renameExercicio: (exercicioId: string, nome: string) => Promise<void>;
   updateSeriesConfig: (treinoExercicioId: string, numSeries: number, repMin: number, repMax: number) => Promise<void>;
   removeExercicioDoTreino: (treinoExercicioId: string) => Promise<void>;
-  moveExercicioDoTreino: (treinoExercicioId: string, direction: "up" | "down") => Promise<void>;
+  excluirExercicioDefinitivamente: (exercicioId: string) => Promise<void>;
+  reordenarExerciciosDoTreino: (treinoExercicioIdsEmOrdem: string[]) => Promise<void>;
   setTreinoDoDia: (diaSemana: number, treinoId: string | null) => Promise<void>;
   updateNome: (nome: string) => Promise<void>;
 }
@@ -152,6 +154,15 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await refresh();
       },
 
+      async vincularExercicioExistente(treinoId, exercicioId) {
+        const ordemAtual = db.treinoExercicios.filter((te) => te.treino_id === treinoId).length;
+        await supabase
+          .from("treino_exercicios")
+          .insert({ treino_id: treinoId, exercicio_id: exercicioId, ordem: ordemAtual, rep_min: 8, rep_max: 12 })
+          .throwOnError();
+        await refresh();
+      },
+
       async renameExercicio(exercicioId, nome) {
         await supabase.from("exercicios").update({ nome }).eq("id", exercicioId).throwOnError();
         await refresh();
@@ -183,27 +194,19 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await refresh();
       },
 
-      async moveExercicioDoTreino(treinoExercicioId, direction) {
-        const alvo = db.treinoExercicios.find((te) => te.id === treinoExercicioId);
-        if (!alvo) return;
-        const doTreino = db.treinoExercicios
-          .filter((te) => te.treino_id === alvo.treino_id)
-          .sort((a, b) => a.ordem - b.ordem);
-        const index = doTreino.findIndex((te) => te.id === treinoExercicioId);
-        const destino = direction === "up" ? index - 1 : index + 1;
-        if (destino < 0 || destino >= doTreino.length) return;
-        await Promise.all([
-          supabase
-            .from("treino_exercicios")
-            .update({ ordem: doTreino[destino].ordem })
-            .eq("id", doTreino[index].id)
-            .throwOnError(),
-          supabase
-            .from("treino_exercicios")
-            .update({ ordem: doTreino[index].ordem })
-            .eq("id", doTreino[destino].id)
-            .throwOnError(),
-        ]);
+      async excluirExercicioDefinitivamente(exercicioId) {
+        await supabase.from("exercicios").delete().eq("id", exercicioId).throwOnError();
+        await refresh();
+      },
+
+      async reordenarExerciciosDoTreino(treinoExercicioIdsEmOrdem) {
+        await Promise.all(
+          treinoExercicioIdsEmOrdem.map((id, index) => {
+            const atual = db.treinoExercicios.find((te) => te.id === id);
+            if (!atual || atual.ordem === index) return null;
+            return supabase.from("treino_exercicios").update({ ordem: index }).eq("id", id).throwOnError();
+          }),
+        );
         await refresh();
       },
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { TypographyEyebrow } from "@/components/ui/typography";
 import { DIAS_SEMANA } from "@/lib/semana";
 import type { Treino } from "@/lib/types";
 
@@ -20,7 +21,7 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
 
   return (
     <section className="flex flex-col gap-2.5">
-      <p className="text-[11px] font-bold tracking-widest text-muted-foreground">SUA SEMANA</p>
+      <TypographyEyebrow>SUA SEMANA</TypographyEyebrow>
 
       <div className="overflow-hidden rounded-2xl border border-border bg-card">
         {DIAS_SEMANA.map((d, i) => {
@@ -36,9 +37,11 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
             >
               <span className="text-[14px] font-semibold">{d.label}</span>
               {treino ? (
-                <Badge>{treino.nome || "Treino sem nome"}</Badge>
+                <Badge variant="primary" appearance="solid">
+                  {treino.nome || "Treino sem nome"}
+                </Badge>
               ) : (
-                <Badge variant="outline" className="text-muted-foreground">
+                <Badge variant="secondary" appearance="stroke" className="text-muted-foreground">
                   Descanso
                 </Badge>
               )}

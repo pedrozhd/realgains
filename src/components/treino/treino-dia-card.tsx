@@ -1,14 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Pencil } from "lucide-react";
+import { AdicionarExercicioDialog } from "@/components/treino/adicionar-exercicio-dialog";
+import { SortableTreinoExercicioRow } from "@/components/treino/sortable-treino-exercicio-row";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
-import { TreinoExercicioRow } from "@/components/treino/treino-exercicio-row";
-import type { TreinoExercicioComExercicio } from "@/lib/types";
+import type { Exercicio, TreinoExercicioComExercicio } from "@/lib/types";
 
 interface TreinoDiaCardProps {
   nome: string;
   exercicios: TreinoExercicioComExercicio[];
+  exerciciosOrfaos: Exercicio[];
   isFirst: boolean;
   isLast: boolean;
   onRename: (nome: string) => void;
@@ -16,15 +29,18 @@ interface TreinoDiaCardProps {
   onMoveDown: () => void;
   onRemoveDia: () => void;
   onAddExercicio: () => void;
+  onVincularExercicioExistente: (exercicioId: string) => void;
   onRenameExercicio: (exercicioId: string, nome: string) => void;
   onSeriesConfigChange: (treinoExercicioId: string, numSeries: number, repMin: number, repMax: number) => void;
-  onMoveExercicio: (treinoExercicioId: string, direction: "up" | "down") => void;
-  onRemoveExercicio: (treinoExercicioId: string) => void;
+  onReordenarExercicios: (treinoExercicioIdsEmOrdem: string[]) => void;
+  onDesvincularExercicio: (treinoExercicioId: string) => void;
+  onApagarExercicioDefinitivamente: (exercicioId: string) => void;
 }
 
 export function TreinoDiaCard({
   nome,
   exercicios,
+  exerciciosOrfaos,
   isFirst,
   isLast,
   onRename,
@@ -32,12 +48,31 @@ export function TreinoDiaCard({
   onMoveDown,
   onRemoveDia,
   onAddExercicio,
+  onVincularExercicioExistente,
   onRenameExercicio,
   onSeriesConfigChange,
-  onMoveExercicio,
-  onRemoveExercicio,
+  onReordenarExercicios,
+  onDesvincularExercicio,
+  onApagarExercicioDefinitivamente,
 }: TreinoDiaCardProps) {
   const [editandoNome, setEditandoNome] = useState(false);
+  const [adicionandoExercicio, setAdicionandoExercicio] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const ids = exercicios.map((te) => te.id);
+    const indiceAntigo = ids.indexOf(String(active.id));
+    const indiceNovo = ids.indexOf(String(over.id));
+    if (indiceAntigo === -1 || indiceNovo === -1) return;
+    onReordenarExercicios(arrayMove(ids, indiceAntigo, indiceNovo));
+  }
 
   return (
     <section className="rounded-2xl border border-border bg-card p-3.5">
@@ -93,34 +128,44 @@ export function TreinoDiaCard({
         </button>
       </div>
 
-      <div className="mt-2.5 flex flex-col gap-2">
-        {exercicios.map((te, i) => (
-          <TreinoExercicioRow
-            key={te.id}
-            nome={te.exercicio.nome}
-            numSeries={te.num_series}
-            repMin={te.rep_min}
-            repMax={te.rep_max}
-            isFirst={i === 0}
-            isLast={i === exercicios.length - 1}
-            onRename={(novoNome) => onRenameExercicio(te.exercicio_id, novoNome)}
-            onNumSeriesChange={(v) => onSeriesConfigChange(te.id, v, te.rep_min, te.rep_max)}
-            onRepMinChange={(v) => onSeriesConfigChange(te.id, te.num_series, v, te.rep_max)}
-            onRepMaxChange={(v) => onSeriesConfigChange(te.id, te.num_series, te.rep_min, v)}
-            onMoveUp={() => onMoveExercicio(te.id, "up")}
-            onMoveDown={() => onMoveExercicio(te.id, "down")}
-            onRemove={() => onRemoveExercicio(te.id)}
-          />
-        ))}
-      </div>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={exercicios.map((te) => te.id)} strategy={verticalListSortingStrategy}>
+          <div className="mt-2.5 flex flex-col gap-2">
+            {exercicios.map((te) => (
+              <SortableTreinoExercicioRow
+                key={te.id}
+                id={te.id}
+                nome={te.exercicio.nome}
+                numSeries={te.num_series}
+                repMin={te.rep_min}
+                repMax={te.rep_max}
+                onRename={(novoNome) => onRenameExercicio(te.exercicio_id, novoNome)}
+                onNumSeriesChange={(v) => onSeriesConfigChange(te.id, v, te.rep_min, te.rep_max)}
+                onRepMinChange={(v) => onSeriesConfigChange(te.id, te.num_series, v, te.rep_max)}
+                onRepMaxChange={(v) => onSeriesConfigChange(te.id, te.num_series, te.rep_min, v)}
+                onDesvincular={() => onDesvincularExercicio(te.id)}
+                onApagarDefinitivamente={() => onApagarExercicioDefinitivamente(te.exercicio_id)}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
 
       <button
         type="button"
-        onClick={onAddExercicio}
+        onClick={() => setAdicionandoExercicio(true)}
         className="mt-2.5 w-full rounded-[10px] border border-dashed border-input py-2.5 text-[13px] font-semibold text-muted-foreground"
       >
         + Adicionar exercício
       </button>
+
+      <AdicionarExercicioDialog
+        open={adicionandoExercicio}
+        onOpenChange={setAdicionandoExercicio}
+        exerciciosOrfaos={exerciciosOrfaos}
+        onCriarNovo={onAddExercicio}
+        onVincularExistente={onVincularExercicioExistente}
+      />
     </section>
   );
 }

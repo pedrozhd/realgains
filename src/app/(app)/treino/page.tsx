@@ -3,6 +3,7 @@
 import { AppHeader } from "@/components/layout/app-header";
 import { SemanaCard } from "@/components/treino/semana-card";
 import { TreinoDiaCard } from "@/components/treino/treino-dia-card";
+import { TypographyMuted } from "@/components/ui/typography";
 import { useAppStore } from "@/lib/store";
 import type { TreinoExercicioComExercicio } from "@/lib/types";
 
@@ -17,21 +18,25 @@ export default function MeuTreinoPage() {
     removeTreino,
     moveTreino,
     addExercicioATreino,
+    vincularExercicioExistente,
     renameExercicio,
     updateSeriesConfig,
     removeExercicioDoTreino,
-    moveExercicioDoTreino,
+    excluirExercicioDefinitivamente,
+    reordenarExerciciosDoTreino,
     setTreinoDoDia,
   } = useAppStore();
 
   const treinosOrdenados = [...treinos].sort((a, b) => a.ordem - b.ordem);
+  const idsComTreino = new Set(treinoExercicios.map((te) => te.exercicio_id));
+  const exerciciosOrfaos = exercicios.filter((e) => !idsComTreino.has(e.id));
 
   if (loading) {
     return (
       <>
         <AppHeader variant="title" title="Meu Treino" />
-        <main className="flex flex-1 items-center justify-center px-8 text-center text-[13px] text-muted-foreground">
-          Carregando...
+        <main className="flex flex-1 items-center justify-center px-8">
+          <TypographyMuted className="text-center">Carregando...</TypographyMuted>
         </main>
       </>
     );
@@ -54,6 +59,7 @@ export default function MeuTreinoPage() {
                 key={treino.id}
                 nome={treino.nome}
                 exercicios={exerciciosDoTreino}
+                exerciciosOrfaos={exerciciosOrfaos}
                 isFirst={i === 0}
                 isLast={i === treinosOrdenados.length - 1}
                 onRename={(nome) => renameTreino(treino.id, nome)}
@@ -61,10 +67,12 @@ export default function MeuTreinoPage() {
                 onMoveDown={() => moveTreino(treino.id, "down")}
                 onRemoveDia={() => removeTreino(treino.id)}
                 onAddExercicio={() => addExercicioATreino(treino.id)}
+                onVincularExercicioExistente={(exercicioId) => vincularExercicioExistente(treino.id, exercicioId)}
                 onRenameExercicio={renameExercicio}
                 onSeriesConfigChange={updateSeriesConfig}
-                onMoveExercicio={moveExercicioDoTreino}
-                onRemoveExercicio={removeExercicioDoTreino}
+                onReordenarExercicios={reordenarExerciciosDoTreino}
+                onDesvincularExercicio={removeExercicioDoTreino}
+                onApagarExercicioDefinitivamente={excluirExercicioDefinitivamente}
               />
             );
           })}

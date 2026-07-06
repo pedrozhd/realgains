@@ -1,19 +1,22 @@
+"use client";
+
+import { useState, type HTMLAttributes } from "react";
+import { GripVertical } from "lucide-react";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
+import { RemoverExercicioDialog } from "@/components/treino/remover-exercicio-dialog";
 
 interface TreinoExercicioRowProps {
   nome: string;
   numSeries: number;
   repMin: number;
   repMax: number;
-  isFirst: boolean;
-  isLast: boolean;
   onRename: (nome: string) => void;
   onNumSeriesChange: (value: number) => void;
   onRepMinChange: (value: number) => void;
   onRepMaxChange: (value: number) => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  onRemove: () => void;
+  onDesvincular: () => void;
+  onApagarDefinitivamente: () => void;
+  dragHandleProps?: HTMLAttributes<HTMLButtonElement>;
 }
 
 export function TreinoExercicioRow({
@@ -21,39 +24,27 @@ export function TreinoExercicioRow({
   numSeries,
   repMin,
   repMax,
-  isFirst,
-  isLast,
   onRename,
   onNumSeriesChange,
   onRepMinChange,
   onRepMaxChange,
-  onMoveUp,
-  onMoveDown,
-  onRemove,
+  onDesvincular,
+  onApagarDefinitivamente,
+  dragHandleProps,
 }: TreinoExercicioRowProps) {
+  const [confirmandoRemocao, setConfirmandoRemocao] = useState(false);
+
   return (
     <div className="flex flex-col gap-1.5 rounded-[10px] border border-border/70 bg-background px-2.5 py-2">
       <div className="flex items-center gap-2">
-        <div className="flex flex-none flex-col gap-0.5">
-          <button
-            type="button"
-            onClick={onMoveUp}
-            disabled={isFirst}
-            aria-label="Mover exercício para cima"
-            className="text-[11px] leading-none text-muted-foreground disabled:opacity-30"
-          >
-            ▲
-          </button>
-          <button
-            type="button"
-            onClick={onMoveDown}
-            disabled={isLast}
-            aria-label="Mover exercício para baixo"
-            className="text-[11px] leading-none text-muted-foreground disabled:opacity-30"
-          >
-            ▼
-          </button>
-        </div>
+        <button
+          type="button"
+          aria-label="Arrastar para reordenar"
+          className="flex-none touch-none text-muted-foreground active:opacity-60"
+          {...dragHandleProps}
+        >
+          <GripVertical size={16} />
+        </button>
 
         <BlurCommitInput
           value={nome}
@@ -64,7 +55,7 @@ export function TreinoExercicioRow({
 
         <button
           type="button"
-          onClick={onRemove}
+          onClick={() => setConfirmandoRemocao(true)}
           aria-label="Remover exercício"
           className="shrink-0 px-1 text-base text-muted-foreground"
         >
@@ -101,6 +92,14 @@ export function TreinoExercicioRow({
         />
         <span className="shrink-0">reps</span>
       </div>
+
+      <RemoverExercicioDialog
+        open={confirmandoRemocao}
+        onOpenChange={setConfirmandoRemocao}
+        nomeExercicio={nome}
+        onDesvincular={onDesvincular}
+        onApagarDefinitivamente={onApagarDefinitivamente}
+      />
     </div>
   );
 }

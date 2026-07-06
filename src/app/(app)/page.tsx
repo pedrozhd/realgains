@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ExercicioGrid } from "@/components/dashboard/exercicio-grid";
 import { TreinoDeHojeCard } from "@/components/dashboard/treino-de-hoje-card";
 import { VolumeSemanalCard } from "@/components/dashboard/volume-semanal-card";
+import { TypographyH4, TypographyMuted } from "@/components/ui/typography";
 import { getDashboardData } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 
@@ -23,13 +24,13 @@ export default function DashboardPage() {
       <AppHeader variant="dashboard" userName={userName} onAvatarClick={() => setContaAberta(true)} />
       <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         {loading ? (
-          <p className="flex-1 py-10 text-center text-[13px] text-muted-foreground">Carregando...</p>
+          <TypographyMuted className="flex-1 py-10 text-center">Carregando...</TypographyMuted>
         ) : treinos.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 py-10 text-center">
-            <p className="text-[15px] font-semibold">Nenhum treino cadastrado ainda</p>
-            <p className="max-w-[26ch] text-[13px] text-muted-foreground">
+            <TypographyH4>Nenhum treino cadastrado ainda</TypographyH4>
+            <TypographyMuted className="max-w-[26ch]">
               Crie seus treinos e defina sua semana para começar a registrar suas séries.
-            </p>
+            </TypographyMuted>
             <Button render={<Link href="/treino" />} nativeButton={false} className="mt-2 h-11 rounded-xl px-5">
               Ir para Meu Treino
             </Button>
@@ -46,10 +47,10 @@ export default function DashboardPage() {
                   </>
                 ) : (
                   <section className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card p-6 text-center">
-                    <p className="text-[15px] font-semibold">Hoje é seu dia de descanso 🎉</p>
-                    <p className="max-w-[28ch] text-[13px] text-muted-foreground">
+                    <TypographyH4>Hoje é seu dia de descanso 🎉</TypographyH4>
+                    <TypographyMuted className="max-w-[28ch]">
                       Nenhum treino está agendado para hoje. Ajuste sua semana em &ldquo;Meu Treino&rdquo;.
-                    </p>
+                    </TypographyMuted>
                   </section>
                 )}
                 <Link

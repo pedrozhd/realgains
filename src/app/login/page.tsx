@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TypographyLead } from "@/components/ui/typography";
 import { createClient } from "@/lib/supabase/client";
 
 type Modo = "entrar" | "criar";
@@ -61,9 +62,9 @@ export default function LoginPage() {
     <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col justify-center bg-background px-6 text-foreground">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold tracking-tight">RealGains</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <TypographyLead className="mt-1">
           {modo === "entrar" ? "Entre para continuar sua progressão." : "Crie sua conta para começar."}
-        </p>
+        </TypographyLead>
       </div>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-3.5">

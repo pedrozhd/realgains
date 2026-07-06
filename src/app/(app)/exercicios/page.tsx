@@ -2,6 +2,7 @@
 
 import { AppHeader } from "@/components/layout/app-header";
 import { ExercicioRow } from "@/components/dashboard/exercicio-row";
+import { TypographyEyebrow, TypographyMuted } from "@/components/ui/typography";
 import { getResumoExercicio } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 import type { Exercicio } from "@/lib/types";
@@ -13,8 +14,8 @@ export default function ExerciciosPage() {
     return (
       <>
         <AppHeader variant="title" title="Histórico" />
-        <main className="flex flex-1 items-center justify-center px-8 text-center text-[13px] text-muted-foreground">
-          Carregando...
+        <main className="flex flex-1 items-center justify-center px-8">
+          <TypographyMuted className="text-center">Carregando...</TypographyMuted>
         </main>
       </>
     );
@@ -41,16 +42,14 @@ export default function ExerciciosPage() {
       <AppHeader variant="title" title="Histórico" />
       <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         {exercicios.length === 0 ? (
-          <p className="flex-1 py-10 text-center text-[13px] text-muted-foreground">
+          <TypographyMuted className="flex-1 py-10 text-center">
             Nenhum exercício cadastrado ainda. Adicione em &ldquo;Meu Treino&rdquo;.
-          </p>
+          </TypographyMuted>
         ) : (
           <>
             {grupos.map((g) => (
               <section key={g.treino.id} className="flex flex-col gap-2.5">
-                <p className="text-[11px] font-bold tracking-widest text-muted-foreground">
-                  {g.treino.nome.toUpperCase()}
-                </p>
+                <TypographyEyebrow>{g.treino.nome}</TypographyEyebrow>
                 <div className="flex flex-col gap-2.5">
                   {g.exercicios.map((ex) => (
                     <ExercicioRow
@@ -68,7 +67,7 @@ export default function ExerciciosPage() {
 
             {semTreino.length > 0 && (
               <section className="flex flex-col gap-2.5">
-                <p className="text-[11px] font-bold tracking-widest text-muted-foreground">SEM TREINO ATRIBUÍDO</p>
+                <TypographyEyebrow>SEM TREINO ATRIBUÍDO</TypographyEyebrow>
                 <div className="flex flex-col gap-2.5">
                   {semTreino.map((ex) => (
                     <ExercicioRow

@@ -1,4 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { TypographyEyebrow } from "@/components/ui/typography";
 import type { Qualidade } from "@/lib/types";
 
 const OPCOES: { key: Qualidade; emoji: string; label: string }[] = [
@@ -15,7 +16,7 @@ interface QualidadePickerProps {
 export function QualidadePicker({ qualidade, onChange }: QualidadePickerProps) {
   return (
     <section className="flex flex-col gap-2.5">
-      <p className="text-[11px] font-bold tracking-widest text-muted-foreground">QUALIDADE DA SÉRIE</p>
+      <TypographyEyebrow>QUALIDADE DA SÉRIE</TypographyEyebrow>
       <ToggleGroup
         value={qualidade ? [qualidade] : []}
         onValueChange={(valores) => onChange((valores[0] as Qualidade) ?? null)}

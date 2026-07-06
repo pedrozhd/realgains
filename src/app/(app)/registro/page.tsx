@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +11,7 @@ import { CargaCard } from "@/components/registro/carga-card";
 import { ExercicioTabs } from "@/components/registro/exercicio-tabs";
 import { QualidadePicker } from "@/components/registro/qualidade-picker";
 import { RepsCard } from "@/components/registro/reps-card";
+import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
 import {
   formatCarga,
   getTreinoDeHoje,
@@ -84,8 +87,8 @@ export default function RegistroPage() {
     return (
       <>
         <AppHeader variant="title" title="Registro" />
-        <main className="flex flex-1 items-center justify-center px-8 text-center text-[13px] text-muted-foreground">
-          Carregando...
+        <main className="flex flex-1 items-center justify-center px-8">
+          <TypographyMuted className="text-center">Carregando...</TypographyMuted>
         </main>
       </>
     );
@@ -102,8 +105,8 @@ export default function RegistroPage() {
     return (
       <>
         <AppHeader variant="title" title="Registro" />
-        <main className="flex flex-1 items-center justify-center px-8 text-center text-[13px] text-muted-foreground">
-          {mensagem}
+        <main className="flex flex-1 items-center justify-center px-8">
+          <TypographyMuted className="text-center">{mensagem}</TypographyMuted>
         </main>
       </>
     );
@@ -124,29 +127,29 @@ export default function RegistroPage() {
     <>
       <AppHeader variant="title" title="Registro" />
       <main className="flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-4">
-        <div className="flex flex-col gap-2.5">
-          <div className="flex items-center justify-between">
-            <ExercicioTabs
-              nomes={exerciciosDoDia.map((te) => te.exercicio?.nome ?? "")}
-              activeIndex={activeIndex}
-              onSelect={selecionarExercicio}
-            />
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Badge variant="outline" className="w-fit">
+        <div className="flex flex-col gap-4">
+          <ExercicioTabs
+            nomes={exerciciosDoDia.map((te) => te.exercicio?.nome ?? "")}
+            activeIndex={activeIndex}
+            onSelect={selecionarExercicio}
+          />
+
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" appearance="stroke" className="w-fit">
               {treinoDeHoje.nome.toUpperCase()}
             </Badge>
-            <Badge className="w-fit">
+            <Badge variant="primary" appearance="solid" className="w-fit">
               SÉRIE {numeroProximaSerie} DE {curEx.num_series}
             </Badge>
           </div>
+
           <div>
-            <h2 className="text-[26px] leading-[1.15] font-bold tracking-tight">{curEx.exercicio.nome}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <TypographyH1>{curEx.exercicio.nome}</TypographyH1>
+            <TypographyMuted className="mt-1.5">
               {ultima
                 ? `Última: ${formatCarga(ultima.carga)} kg × ${ultima.reps} ${QUALIDADE_EMOJI[ultima.qualidade]}`
                 : "Sem registros ainda"}
-            </p>
+            </TypographyMuted>
           </div>
         </div>
 
@@ -186,6 +189,13 @@ export default function RegistroPage() {
       </main>
 
       <div className="flex-none border-t border-border px-5 pt-3 pb-2.5">
+        <Link
+          href={`/exercicio/${curEx.exercicio_id}`}
+          className="mb-2 flex items-center justify-center gap-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"
+        >
+          Ver histórico do exercício
+          <ChevronRight size={16} />
+        </Link>
         <Button
           onClick={onSave}
           disabled={!podeSalvar}
