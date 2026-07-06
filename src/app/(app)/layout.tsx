@@ -8,7 +8,11 @@ import { AppStoreProvider } from "@/lib/store";
 export default function AppShellLayout({ children }: { children: ReactNode }) {
   return (
     <AppStoreProvider>
-      <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col bg-background text-foreground">
+      {/* h-svh (não h-dvh): a altura dinâmica recalcula ao vivo quando a barra
+          do Safari esconde/aparece durante a rolagem, e isso deixava vão no
+          topo e cortava o nav embaixo. svh trava no tamanho "com a barra
+          visível" e não oscila. */}
+      <div className="mx-auto flex h-svh w-full max-w-[430px] flex-col bg-background text-foreground">
         {children}
         <BottomNav />
       </div>
