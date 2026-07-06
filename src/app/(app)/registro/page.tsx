@@ -193,7 +193,7 @@ export default function RegistroPage() {
         )}
       </main>
 
-      <div className="flex-none border-t border-border px-5 pt-3 pb-[calc(env(safe-area-inset-bottom)+96px)]">
+      <div className="flex-none border-t border-border px-5 pt-3 pb-2.5">
         <Link
           href={`/exercicio/${curEx.exercicio_id}`}
           className="mb-2 flex items-center justify-center gap-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"

@@ -21,7 +21,7 @@ export default function DashboardPage() {
   return (
     <>
       <AppHeader variant="dashboard" userName={userName} onAvatarClick={() => setContaAberta(true)} />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-[calc(env(safe-area-inset-bottom)+96px)]">
+      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         {loading ? (
           <TypographyMuted className="flex-1 py-10 text-center">Carregando...</TypographyMuted>
         ) : treinos.length === 0 ? (

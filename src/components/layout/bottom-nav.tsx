@@ -15,15 +15,15 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    // Fora do fluxo (absolute) pra flutuar sobre o `main` rolável, em vez de
-    // reservar sua própria linha no layout — é isso que permite o conteúdo
-    // passar por baixo e aparecer através do vidro.
+    // No fluxo normal (reserva sua própria linha) — testado em dispositivo
+    // real, um nav flutuante por cima do conteúdo deixava a área útil de
+    // rolagem curta demais e escondia permanentemente o fim das listas.
     // Sombra e recorte arredondado ficam em elementos separados: aplicar box-shadow
     // junto com backdrop-blur + overflow-hidden no mesmo nó faz alguns navegadores
     // quebrarem o clip nos cantos e pintar um retângulo sólido ali em vez de recortar.
     <nav
-      className="absolute inset-x-4 rounded-3xl shadow-[0_12px_28px_-8px_rgba(0,0,0,0.65)]"
-      style={{ bottom: "calc(env(safe-area-inset-bottom) + 1rem)" }}
+      className="relative mx-4 flex-none rounded-3xl shadow-[0_12px_28px_-8px_rgba(0,0,0,0.65)]"
+      style={{ marginBottom: "calc(env(safe-area-inset-bottom) + 1rem)" }}
     >
       <div className="absolute inset-0 rounded-3xl border border-border/60 bg-card/90 backdrop-blur-xl" />
       <div className="relative grid grid-cols-4 gap-1 px-2 py-2">

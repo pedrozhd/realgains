@@ -40,7 +40,7 @@ export default function ExerciciosPage() {
   return (
     <>
       <AppHeader variant="title" title="Histórico" />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-[calc(env(safe-area-inset-bottom)+96px)]">
+      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         {exercicios.length === 0 ? (
           <TypographyMuted className="flex-1 py-10 text-center">
             Nenhum exercício cadastrado ainda. Adicione em &ldquo;Meu Treino&rdquo;.
