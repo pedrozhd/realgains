@@ -191,24 +191,24 @@ export default function RegistroPage() {
             </div>
           </div>
         )}
-      </main>
 
-      <div className="flex-none border-t border-border px-5 pt-3 pb-2.5">
-        <Link
-          href={`/exercicio/${curEx.exercicio_id}`}
-          className="mb-2 flex items-center justify-center gap-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"
-        >
-          Ver histórico do exercício
-          <ChevronRight size={16} />
-        </Link>
-        <Button
-          onClick={onSave}
-          disabled={!podeSalvar}
-          className="h-[60px] w-full rounded-2xl text-[17px] font-bold"
-        >
-          Salvar série
-        </Button>
-      </div>
+        <div className="flex flex-col border-t border-border pt-3">
+          <Link
+            href={`/exercicio/${curEx.exercicio_id}`}
+            className="mb-2 flex items-center justify-center gap-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"
+          >
+            Ver histórico do exercício
+            <ChevronRight size={16} />
+          </Link>
+          <Button
+            onClick={onSave}
+            disabled={!podeSalvar}
+            className="h-[60px] w-full rounded-2xl text-[17px] font-bold"
+          >
+            Salvar série
+          </Button>
+        </div>
+      </main>
 
       <ToastPill message={toast?.msg ?? null} toastKey={toast?.key ?? 0} />
     </>
