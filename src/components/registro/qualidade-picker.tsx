@@ -1,11 +1,12 @@
+import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TypographyEyebrow } from "@/components/ui/typography";
 import type { Qualidade } from "@/lib/types";
 
-const OPCOES: { key: Qualidade; emoji: string; label: string }[] = [
-  { key: "boa", emoji: "🟢", label: "Boa" },
-  { key: "razoavel", emoji: "🟡", label: "Razoável" },
-  { key: "ruim", emoji: "🔴", label: "Ruim" },
+const OPCOES: { key: Qualidade; label: string }[] = [
+  { key: "boa", label: "Boa" },
+  { key: "razoavel", label: "Razoável" },
+  { key: "ruim", label: "Ruim" },
 ];
 
 interface QualidadePickerProps {
@@ -34,7 +35,7 @@ export function QualidadePicker({ qualidade, onChange }: QualidadePickerProps) {
                   : "border-border bg-card text-muted-foreground"
               }`}
             >
-              <span className="text-lg leading-none">{op.emoji}</span>
+              <QualidadeIcon qualidade={op.key} size={20} />
               <span>{op.label}</span>
             </ToggleGroupItem>
           );

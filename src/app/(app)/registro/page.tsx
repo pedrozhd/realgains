@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ToastPill } from "@/components/ui/toast-pill";
 import { CargaCard } from "@/components/registro/carga-card";
 import { ExercicioTabs } from "@/components/registro/exercicio-tabs";
+import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { QualidadePicker } from "@/components/registro/qualidade-picker";
 import { RepsCard } from "@/components/registro/reps-card";
 import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
@@ -22,8 +23,6 @@ import {
 import { useAppStore } from "@/lib/store";
 import { getDataLocalISO } from "@/lib/timezone";
 import type { Qualidade } from "@/lib/types";
-
-const QUALIDADE_EMOJI: Record<Qualidade, string> = { boa: "🟢", razoavel: "🟡", ruim: "🔴" };
 
 export default function RegistroPage() {
   const { treinos, treinoExercicios, exercicios, series, addSerie, loading } = useAppStore();
@@ -135,20 +134,25 @@ export default function RegistroPage() {
           />
 
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" appearance="stroke" className="w-fit">
+            <Badge variant="secondary" appearance="stroke" className="h-6 w-fit px-3 py-1">
               {treinoDeHoje.nome.toUpperCase()}
             </Badge>
-            <Badge variant="primary" appearance="solid" className="w-fit">
+            <Badge variant="primary" appearance="solid" className="h-6 w-fit px-3 py-1">
               SÉRIE {numeroProximaSerie} DE {curEx.num_series}
             </Badge>
           </div>
 
           <div>
             <TypographyH1>{curEx.exercicio.nome}</TypographyH1>
-            <TypographyMuted className="mt-1.5">
-              {ultima
-                ? `Última: ${formatCarga(ultima.carga)} kg × ${ultima.reps} ${QUALIDADE_EMOJI[ultima.qualidade]}`
-                : "Sem registros ainda"}
+            <TypographyMuted className="mt-1.5 flex items-center gap-1.5">
+              {ultima ? (
+                <>
+                  Última: {formatCarga(ultima.carga)} kg × {ultima.reps}
+                  <QualidadeIcon qualidade={ultima.qualidade} />
+                </>
+              ) : (
+                "Sem registros ainda"
+              )}
             </TypographyMuted>
           </div>
         </div>
@@ -178,9 +182,10 @@ export default function RegistroPage() {
               {setsDeHoje.map((s, i) => (
                 <span
                   key={s.id}
-                  className="rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground"
+                  className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs text-muted-foreground"
                 >
-                  Série {i + 1}: {formatCarga(s.carga)}kg × {s.reps} {QUALIDADE_EMOJI[s.qualidade]}
+                  Série {i + 1}: {formatCarga(s.carga)}kg × {s.reps}
+                  <QualidadeIcon qualidade={s.qualidade} size={12} />
                 </span>
               ))}
             </div>
@@ -188,7 +193,7 @@ export default function RegistroPage() {
         )}
       </main>
 
-      <div className="flex-none border-t border-border px-5 pt-3 pb-2.5">
+      <div className="flex-none border-t border-border px-5 pt-3 pb-[calc(env(safe-area-inset-bottom)+96px)]">
         <Link
           href={`/exercicio/${curEx.exercicio_id}`}
           className="mb-2 flex items-center justify-center gap-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"

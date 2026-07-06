@@ -44,7 +44,7 @@ export function TypographyMuted({ className, ...props }: ComponentProps<"p">) {
 export function TypographyEyebrow({ className, ...props }: ComponentProps<"p">) {
   return (
     <p
-      className={cn("text-[11px] font-bold tracking-widest text-muted-foreground uppercase", className)}
+      className={cn("text-[11px] font-bold text-muted-foreground uppercase", className)}
       {...props}
     />
   );

@@ -1,7 +1,5 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { TypographyEyebrow, TypographyH1, TypographyMuted } from "@/components/ui/typography";
 
 interface Props {
@@ -9,7 +7,6 @@ interface Props {
 }
 
 export function TreinoDeHojeCard({ treino }: Props) {
-  const router = useRouter();
   const exerciciosLabel = `${treino.totalExercicios} ${
     treino.totalExercicios === 1 ? "exercício" : "exercícios"
   }`;
@@ -21,15 +18,13 @@ export function TreinoDeHojeCard({ treino }: Props) {
         <TypographyH1 className="mt-1">{treino.nome}</TypographyH1>
         <TypographyMuted className="mt-0.5">{exerciciosLabel}</TypographyMuted>
       </div>
-      <ShimmerButton
-        onClick={() => router.push("/registro")}
-        background="var(--foreground)"
-        shimmerColor="var(--success)"
-        borderRadius="0.75rem"
-        className="h-[52px] w-full border-none px-6 py-0 text-[15px] font-bold text-primary-foreground"
+      <Button
+        render={<Link href="/registro" />}
+        nativeButton={false}
+        className="h-[52px] w-full rounded-xl text-[15px] font-bold"
       >
         Iniciar registro
-      </ShimmerButton>
+      </Button>
     </section>
   );
 }

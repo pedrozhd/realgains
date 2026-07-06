@@ -3,13 +3,11 @@
 import { useParams, useRouter } from "next/navigation";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { AppHeader } from "@/components/layout/app-header";
+import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { TypographyEyebrow, TypographyMuted } from "@/components/ui/typography";
 import { formatCarga } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 import { APP_TIMEZONE } from "@/lib/timezone";
-import type { Qualidade } from "@/lib/types";
-
-const QUALIDADE_EMOJI: Record<Qualidade, string> = { boa: "🟢", razoavel: "🟡", ruim: "🔴" };
 
 function formatDataSerie(iso: string): string {
   return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", timeZone: APP_TIMEZONE })
@@ -42,7 +40,7 @@ export default function ExercicioHistoricoPage() {
   return (
     <>
       <AppHeader variant="back" title={exercicio?.nome || "Exercício"} onBack={() => router.back()} />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-[calc(env(safe-area-inset-bottom)+96px)]">
         {seriesRecentePrimeiro.length === 0 ? (
           <TypographyMuted className="flex-1 py-10 text-center">
             Nenhuma série registrada ainda para este exercício.
@@ -92,7 +90,7 @@ export default function ExercicioHistoricoPage() {
                     <span className="flex-1 text-center text-[15px] font-bold">{formatCarga(s.carga)} kg</span>
                     <span className="flex w-16 shrink-0 items-center justify-end gap-2">
                       <span className="text-[13px] text-muted-foreground">× {s.reps}</span>
-                      <span className="text-[13px]">{QUALIDADE_EMOJI[s.qualidade]}</span>
+                      <QualidadeIcon qualidade={s.qualidade} />
                     </span>
                   </div>
                 ))}

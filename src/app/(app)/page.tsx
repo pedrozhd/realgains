@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
 import { AccountSheet } from "@/components/layout/account-sheet";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,7 @@ export default function DashboardPage() {
   return (
     <>
       <AppHeader variant="dashboard" userName={userName} onAvatarClick={() => setContaAberta(true)} />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-[calc(env(safe-area-inset-bottom)+96px)]">
         {loading ? (
           <TypographyMuted className="flex-1 py-10 text-center">Carregando...</TypographyMuted>
         ) : treinos.length === 0 ? (
@@ -53,13 +52,6 @@ export default function DashboardPage() {
                     </TypographyMuted>
                   </section>
                 )}
-                <Link
-                  href="/exercicios"
-                  className="flex items-center justify-center gap-1 py-1 text-[13px] font-semibold text-muted-foreground active:opacity-70"
-                >
-                  Ver todos os exercícios
-                  <ChevronRight size={16} />
-                </Link>
                 <VolumeSemanalCard dados={dashboard.volumeSemanal} />
               </>
             );

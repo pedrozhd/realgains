@@ -8,7 +8,7 @@ import { AppStoreProvider } from "@/lib/store";
 export default function AppShellLayout({ children }: { children: ReactNode }) {
   return (
     <AppStoreProvider>
-      <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col bg-background text-foreground">
+      <div className="relative mx-auto flex h-dvh w-full max-w-[430px] flex-col bg-background text-foreground">
         {children}
         <BottomNav />
       </div>
