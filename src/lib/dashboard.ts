@@ -1,3 +1,4 @@
+import { APP_TIMEZONE, getDataLocalISO, getDiaSemanaNoFuso } from "@/lib/timezone";
 import type {
   Exercicio,
   Qualidade,
@@ -43,18 +44,30 @@ export function getTendencia(seriesDoExercicio: Serie[]): Tendencia | null {
   return plato ? "estagnado" : "manteve";
 }
 
-/** O treino de hoje é o que estiver agendado para o dia da semana atual — null se for descanso. */
+/**
+ * O treino de hoje é o que estiver agendado para o dia da semana atual — null
+ * se for descanso. "Hoje" é sempre calculado no fuso do app (ver
+ * lib/timezone.ts), nunca no fuso do runtime que executa o código — na
+ * Vercel isso é UTC, o que faria o dia virar 3h mais cedo que em São Paulo.
+ */
 export function getTreinoDeHoje(treinos: Treino[], data: Date = new Date()): Treino | null {
-  const diaSemana = data.getDay();
+  const diaSemana = getDiaSemanaNoFuso(data, APP_TIMEZONE);
   return treinos.find((t) => t.dias_semana.includes(diaSemana)) ?? null;
 }
 
+/**
+ * Segunda-feira (YYYY-MM-DD) da semana a que `iso` pertence, no fuso do app.
+ * Resolve a data civil correta via Intl (que já cobre horário de verão etc.)
+ * e só então faz a aritmética de calendário — em UTC "puro", só como
+ * calculadora de datas, sem nenhum deslocamento manual de fuso.
+ */
 function inicioDaSemana(iso: string): string {
-  const d = new Date(iso);
-  const dia = (d.getDay() + 6) % 7; // segunda-feira como início da semana
-  d.setDate(d.getDate() - dia);
-  d.setHours(0, 0, 0, 0);
-  return d.toISOString();
+  const dataLocal = getDataLocalISO(new Date(iso), APP_TIMEZONE);
+  const [ano, mes, dia] = dataLocal.split("-").map(Number);
+  const d = new Date(Date.UTC(ano, mes - 1, dia));
+  const diaSemana = (d.getUTCDay() + 6) % 7; // segunda-feira como início da semana
+  d.setUTCDate(d.getUTCDate() - diaSemana);
+  return d.toISOString().slice(0, 10);
 }
 
 export function getVolumeSemanal(series: Serie[], semanas = 8): VolumeSemana[] {

@@ -7,9 +7,13 @@ interface Props {
   dados: VolumeSemana[];
 }
 
+// `iso` é uma data civil (YYYY-MM-DD) já resolvida para o fuso do app em
+// getVolumeSemanal — por isso formata em timeZone: "UTC" aqui, não no fuso
+// do navegador, senão a meia-noite UTC vira o dia anterior em fusos como o
+// do Brasil (UTC-3) e a data exibida fica um dia adiantada/atrasada.
 function formatSemana(iso: string): string {
-  return new Date(iso)
-    .toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })
+  return new Date(`${iso}T00:00:00Z`)
+    .toLocaleDateString("pt-BR", { day: "2-digit", month: "short", timeZone: "UTC" })
     .replace(".", "");
 }
 

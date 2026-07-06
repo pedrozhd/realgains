@@ -17,6 +17,7 @@ import {
   shouldSugerirProgressao,
 } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
+import { getDataLocalISO } from "@/lib/timezone";
 import type { Qualidade } from "@/lib/types";
 
 const QUALIDADE_EMOJI: Record<Qualidade, string> = { boa: "🟢", razoavel: "🟡", ruim: "🔴" };
@@ -110,9 +111,11 @@ export default function RegistroPage() {
 
   const seriesDoExercicio = series.filter((s) => s.exercicio_id === curEx.exercicio_id);
   const ultima = getUltimaSerie(seriesDoExercicio);
-  const hojeStr = new Date().toDateString();
+  // Fuso fixo do app, não o do navegador — mantém "hoje" consistente com o
+  // que a API (/api/hoje, rodando na Vercel em UTC) calcula.
+  const hojeStr = getDataLocalISO(new Date());
   const setsDeHoje = seriesDoExercicio
-    .filter((s) => new Date(s.data).toDateString() === hojeStr)
+    .filter((s) => getDataLocalISO(new Date(s.data)) === hojeStr)
     .sort((a, b) => a.data.localeCompare(b.data));
   const numeroProximaSerie = setsDeHoje.length + 1;
   const sugereProgressao = shouldSugerirProgressao(reps, curEx.rep_max, qualidade);
