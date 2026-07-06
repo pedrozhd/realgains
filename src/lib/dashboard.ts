@@ -87,10 +87,6 @@ export function shouldSugerirProgressao(reps: number, repMax: number, qualidade:
   return reps >= repMax && qualidade === "boa";
 }
 
-export function shouldAlertarProximoDoLimite(reps: number, repMax: number): boolean {
-  return reps === repMax - 1;
-}
-
 export interface ResumoExercicio {
   nome: string;
   ultimaSerieLabel: string;

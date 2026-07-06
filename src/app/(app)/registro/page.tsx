@@ -13,13 +13,7 @@ import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { QualidadePicker } from "@/components/registro/qualidade-picker";
 import { RepsCard } from "@/components/registro/reps-card";
 import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
-import {
-  formatCarga,
-  getTreinoDeHoje,
-  getUltimaSerie,
-  shouldAlertarProximoDoLimite,
-  shouldSugerirProgressao,
-} from "@/lib/dashboard";
+import { formatCarga, getTreinoDeHoje, getUltimaSerie, shouldSugerirProgressao } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 import { getDataLocalISO } from "@/lib/timezone";
 import type { Qualidade } from "@/lib/types";
@@ -62,11 +56,7 @@ export default function RegistroPage() {
   }
 
   function onRepTap() {
-    const novo = reps + 1;
-    setReps(novo);
-    if (curEx && shouldAlertarProximoDoLimite(novo, curEx.rep_max)) {
-      mostrarToast("Quase lá — mais 1 rep e é hora de subir a carga 💪");
-    }
+    setReps((r) => r + 1);
   }
 
   const podeSalvar = Boolean(curEx) && carga > 0 && reps > 0 && qualidade !== null;
