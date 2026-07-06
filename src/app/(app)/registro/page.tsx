@@ -125,7 +125,7 @@ export default function RegistroPage() {
   return (
     <>
       <AppHeader variant="title" title="Registro" />
-      <main className="flex flex-1 flex-col gap-4 overflow-y-auto px-5 pb-4">
+      <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-4">
         <div className="flex flex-col gap-4">
           <ExercicioTabs
             nomes={exerciciosDoDia.map((te) => te.exercicio?.nome ?? "")}

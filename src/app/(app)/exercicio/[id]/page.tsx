@@ -40,7 +40,7 @@ export default function ExercicioHistoricoPage() {
   return (
     <>
       <AppHeader variant="back" title={exercicio?.nome || "Exercício"} onBack={() => router.back()} />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         {seriesRecentePrimeiro.length === 0 ? (
           <TypographyMuted className="flex-1 py-10 text-center">
             Nenhuma série registrada ainda para este exercício.

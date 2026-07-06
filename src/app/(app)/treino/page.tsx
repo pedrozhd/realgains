@@ -45,7 +45,7 @@ export default function MeuTreinoPage() {
   return (
     <>
       <AppHeader variant="title" title="Meu Treino" />
-      <main className="flex flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         <div className="flex flex-col gap-4">
           {treinosOrdenados.map((treino, i) => {
             const exerciciosDoTreino = treinoExercicios
