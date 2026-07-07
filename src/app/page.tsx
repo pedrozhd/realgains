@@ -74,8 +74,8 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
           <span className="text-lg font-extrabold tracking-tight">RealGains</span>
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-[13px] font-semibold text-muted-foreground">
-              Entrar
+            <Link href="/dashboard" className="text-[13px] font-semibold text-muted-foreground">
+              Dashboard
             </Link>
             <a
               href="#waitlist"
