@@ -30,6 +30,8 @@ interface AppStoreValue extends AppDb {
   userEmail: string | null;
   nome: string | null;
   addSerie: (exercicioId: string, carga: number, reps: number, qualidade: Qualidade) => Promise<void>;
+  updateSerie: (serieId: string, carga: number, reps: number, qualidade: Qualidade) => Promise<void>;
+  removeSerie: (serieId: string) => Promise<void>;
   addTreino: () => Promise<void>;
   renameTreino: (treinoId: string, nome: string) => Promise<void>;
   removeTreino: (treinoId: string) => Promise<void>;
@@ -101,6 +103,16 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
       async addSerie(exercicioId, carga, reps, qualidade) {
         await supabase.from("series").insert({ exercicio_id: exercicioId, carga, reps, qualidade }).throwOnError();
+        await refresh();
+      },
+
+      async updateSerie(serieId, carga, reps, qualidade) {
+        await supabase.from("series").update({ carga, reps, qualidade }).eq("id", serieId).throwOnError();
+        await refresh();
+      },
+
+      async removeSerie(serieId) {
+        await supabase.from("series").delete().eq("id", serieId).throwOnError();
         await refresh();
       },
 

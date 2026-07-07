@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ToastPill } from "@/components/ui/toast-pill";
 import { CargaCard } from "@/components/registro/carga-card";
+import { EditarSerieDialog } from "@/components/registro/editar-serie-dialog";
 import { ExercicioTabs } from "@/components/registro/exercicio-tabs";
 import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { QualidadePicker } from "@/components/registro/qualidade-picker";
@@ -16,10 +17,11 @@ import { TypographyH1, TypographyMuted } from "@/components/ui/typography";
 import { formatCarga, getTreinoDeHoje, getUltimaSerie, shouldSugerirProgressao } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 import { getDataLocalISO } from "@/lib/timezone";
-import type { Qualidade } from "@/lib/types";
+import type { Qualidade, Serie } from "@/lib/types";
 
 export default function RegistroPage() {
-  const { treinos, treinoExercicios, exercicios, series, addSerie, loading } = useAppStore();
+  const { treinos, treinoExercicios, exercicios, series, addSerie, updateSerie, removeSerie, loading } = useAppStore();
+  const [serieEditando, setSerieEditando] = useState<Serie | null>(null);
 
   const treinoDeHoje = getTreinoDeHoje(treinos);
   const exerciciosDoDia = treinoDeHoje
@@ -60,6 +62,11 @@ export default function RegistroPage() {
   }
 
   const podeSalvar = Boolean(curEx) && carga > 0 && reps > 0 && qualidade !== null;
+
+  async function onRemoverSerie(serieId: string) {
+    if (!window.confirm("Apagar essa série? Não dá pra desfazer.")) return;
+    await removeSerie(serieId);
+  }
 
   async function onSave() {
     if (!curEx || !podeSalvar || !qualidade) return;
@@ -176,6 +183,22 @@ export default function RegistroPage() {
                 >
                   Série {i + 1}: {formatCarga(s.carga)}kg × {s.reps}
                   <QualidadeIcon qualidade={s.qualidade} size={12} />
+                  <button
+                    type="button"
+                    onClick={() => setSerieEditando(s)}
+                    aria-label="Editar série"
+                    className="text-muted-foreground/60 active:opacity-60"
+                  >
+                    <Pencil size={11} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onRemoverSerie(s.id)}
+                    aria-label="Apagar série"
+                    className="text-muted-foreground/60 active:opacity-60"
+                  >
+                    <Trash2 size={12} />
+                  </button>
                 </span>
               ))}
             </div>
@@ -201,6 +224,12 @@ export default function RegistroPage() {
       </main>
 
       <ToastPill message={toast?.msg ?? null} toastKey={toast?.key ?? 0} />
+
+      <EditarSerieDialog
+        serie={serieEditando}
+        onOpenChange={(open) => !open && setSerieEditando(null)}
+        onSave={(serieId, carga, reps, qualidade) => updateSerie(serieId, carga, reps, qualidade)}
+      />
     </>
   );
 }

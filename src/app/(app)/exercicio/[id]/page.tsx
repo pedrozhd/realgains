@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { Pencil, Trash2 } from "lucide-react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { AppHeader } from "@/components/layout/app-header";
+import { EditarSerieDialog } from "@/components/registro/editar-serie-dialog";
 import { QualidadeIcon } from "@/components/registro/qualidade-icon";
 import { TypographyEyebrow, TypographyMuted } from "@/components/ui/typography";
 import { formatCarga } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
 import { APP_TIMEZONE } from "@/lib/timezone";
+import type { Serie } from "@/lib/types";
 
 function formatDataSerie(iso: string): string {
   return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", timeZone: APP_TIMEZONE })
@@ -18,7 +22,13 @@ function formatDataSerie(iso: string): string {
 export default function ExercicioHistoricoPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const { exercicios, series, loading } = useAppStore();
+  const { exercicios, series, loading, updateSerie, removeSerie } = useAppStore();
+  const [serieEditando, setSerieEditando] = useState<Serie | null>(null);
+
+  async function onRemoverSerie(serieId: string) {
+    if (!window.confirm("Apagar essa série? Não dá pra desfazer.")) return;
+    await removeSerie(serieId);
+  }
 
   const exercicio = exercicios.find((e) => e.id === params.id);
   const seriesAntigaPrimeiro = series
@@ -103,9 +113,25 @@ export default function ExercicioHistoricoPage() {
                   >
                     <span className="w-16 shrink-0 text-[13px] text-muted-foreground">{formatDataSerie(s.data)}</span>
                     <span className="flex-1 text-center text-[15px] font-bold">{formatCarga(s.carga)} kg</span>
-                    <span className="flex w-16 shrink-0 items-center justify-end gap-2">
+                    <span className="flex shrink-0 items-center justify-end gap-2">
                       <span className="text-[13px] text-muted-foreground">× {s.reps}</span>
                       <QualidadeIcon qualidade={s.qualidade} />
+                      <button
+                        type="button"
+                        onClick={() => setSerieEditando(s)}
+                        aria-label="Editar série"
+                        className="text-muted-foreground/60 active:opacity-60"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onRemoverSerie(s.id)}
+                        aria-label="Apagar série"
+                        className="text-muted-foreground/60 active:opacity-60"
+                      >
+                        <Trash2 size={15} />
+                      </button>
                     </span>
                   </div>
                 ))}
@@ -114,6 +140,12 @@ export default function ExercicioHistoricoPage() {
           </>
         )}
       </main>
+
+      <EditarSerieDialog
+        serie={serieEditando}
+        onOpenChange={(open) => !open && setSerieEditando(null)}
+        onSave={(serieId, carga, reps, qualidade) => updateSerie(serieId, carga, reps, qualidade)}
+      />
     </>
   );
 }
