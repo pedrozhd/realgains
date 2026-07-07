@@ -144,6 +144,17 @@
     3px 3px 8px rgba(163, 177, 198, 0.35);
 }
 
+/* Grade decorativa da LP (hero) — linhas finas que somem nas bordas via
+   mask, em vez de um grid "duro" cobrindo a seção toda. */
+.bg-grid-fade {
+  background-image:
+    linear-gradient(to right, rgba(42, 45, 52, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(42, 45, 52, 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, black 40%, transparent 80%);
+}
+
 .shadow-soft-pressed {
   box-shadow:
     inset 4px 4px 8px rgba(163, 177, 198, 0.5),
