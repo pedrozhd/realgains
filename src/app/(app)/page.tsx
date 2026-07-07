@@ -16,7 +16,17 @@ export default function DashboardPage() {
   const { treinos, treinoExercicios, exercicios, series, loading, userEmail, nome, updateNome } = useAppStore();
   const [contaAberta, setContaAberta] = useState(false);
 
-  const userName = nome?.trim() ? nome.trim().split(" ")[0] : userEmail ? userEmail.split("@")[0] : "Você";
+  // Enquanto carrega, userEmail já chega (vem da sessão local) mas nome ainda
+  // não (precisa de uma consulta à tabela profiles) — sem essa checagem, o
+  // fallback pro e-mail aparecia por um instante a cada refresh, antes do
+  // nome real carregar.
+  const userName = loading
+    ? ""
+    : nome?.trim()
+      ? nome.trim().split(" ")[0]
+      : userEmail
+        ? userEmail.split("@")[0]
+        : "Você";
 
   return (
     <>

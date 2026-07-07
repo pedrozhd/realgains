@@ -3,10 +3,10 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { TypographyEyebrow } from "@/components/ui/typography";
 import type { Qualidade } from "@/lib/types";
 
-const OPCOES: { key: Qualidade; label: string }[] = [
-  { key: "boa", label: "Boa" },
-  { key: "razoavel", label: "Razoável" },
-  { key: "ruim", label: "Ruim" },
+const OPCOES: { key: Qualidade; label: string; explicacao: string }[] = [
+  { key: "boa", label: "Boa", explicacao: "Amplitude completa e movimento controlado do início ao fim." },
+  { key: "razoavel", label: "Razoável", explicacao: "Pequena perda de amplitude ou controle." },
+  { key: "ruim", label: "Ruim", explicacao: "Compensações claras ou amplitude parcial." },
 ];
 
 interface QualidadePickerProps {
@@ -41,10 +41,14 @@ export function QualidadePicker({ qualidade, onChange }: QualidadePickerProps) {
           );
         })}
       </ToggleGroup>
-      <p className="text-xs leading-relaxed text-muted-foreground/70">
-        Boa = amplitude completa e movimento controlado do início ao fim. Razoável = pequena perda de
-        amplitude ou controle. Ruim = compensações claras ou amplitude parcial.
-      </p>
+      <div className="flex flex-col gap-1.5 text-xs leading-relaxed text-muted-foreground/70">
+        {OPCOES.map((op) => (
+          <div key={op.key} className="flex items-start gap-1.5">
+            <QualidadeIcon qualidade={op.key} size={13} className="mt-0.5 shrink-0" />
+            <span>{op.explicacao}</span>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

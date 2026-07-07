@@ -77,7 +77,7 @@ export function AppHeader({
     return (
       <header className="flex flex-none items-center justify-between px-5 pt-5 pb-3.5">
         <div>
-          <h1 className="text-[22px] font-extrabold tracking-tight">Olá, {userName}</h1>
+          <h1 className="text-[22px] font-extrabold tracking-tight">Olá{userName ? `, ${userName}` : ""}</h1>
           <p className="mt-0.5 text-[13px] text-muted-foreground">Bora treinar hoje?</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
