@@ -16,7 +16,6 @@ export default function MeuTreinoPage() {
     addTreino,
     renameTreino,
     removeTreino,
-    moveTreino,
     addExercicioATreino,
     vincularExercicioExistente,
     renameExercicio,
@@ -47,7 +46,7 @@ export default function MeuTreinoPage() {
       <AppHeader variant="title" title="Meu Treino" />
       <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
         <div className="flex flex-col gap-4">
-          {treinosOrdenados.map((treino, i) => {
+          {treinosOrdenados.map((treino) => {
             const exerciciosDoTreino = treinoExercicios
               .filter((te) => te.treino_id === treino.id)
               .map((te) => ({ ...te, exercicio: exercicios.find((e) => e.id === te.exercicio_id) }))
@@ -60,11 +59,7 @@ export default function MeuTreinoPage() {
                 nome={treino.nome}
                 exercicios={exerciciosDoTreino}
                 exerciciosOrfaos={exerciciosOrfaos}
-                isFirst={i === 0}
-                isLast={i === treinosOrdenados.length - 1}
                 onRename={(nome) => renameTreino(treino.id, nome)}
-                onMoveUp={() => moveTreino(treino.id, "up")}
-                onMoveDown={() => moveTreino(treino.id, "down")}
                 onRemoveDia={() => removeTreino(treino.id)}
                 onAddExercicio={() => addExercicioATreino(treino.id)}
                 onVincularExercicioExistente={(exercicioId) => vincularExercicioExistente(treino.id, exercicioId)}
@@ -80,7 +75,7 @@ export default function MeuTreinoPage() {
           <button
             type="button"
             onClick={addTreino}
-            className="w-full rounded-2xl border border-border bg-card py-4 text-sm font-bold"
+            className="shadow-soft-subtle w-full rounded-2xl bg-card py-4 text-sm font-bold"
           >
             + Adicionar treino
           </button>

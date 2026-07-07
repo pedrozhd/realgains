@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial,
+  --font-sans: var(--font-satoshi), -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial,
     sans-serif;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -48,47 +48,51 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* RealGains uses a single fixed dark theme (no light mode). */
+/* Redesign Soft UI + Satoshi — tema fixo único do app (era um dark theme
+   fixo antes; ver docs/superpowers/specs/2026-07-07-dashboard-soft-ui-design.md).
+   Acento e "tendência subiu" usam o mesmo verde de propósito: em apps
+   fitness verde já significa progresso/energia, então reservar o acento
+   pra um segundo verde só criaria dois tons pro mesmo significado. */
 :root {
-  --background: #000000;
-  --foreground: #fafafa;
-  --card: #0f0f11;
-  --card-foreground: #fafafa;
-  --popover: #0f0f11;
-  --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #000000;
-  --secondary: #18181b;
-  --secondary-foreground: #fafafa;
-  --muted: #18181b;
-  --muted-foreground: #71717a;
-  --accent: #1c1c20;
-  --accent-foreground: #fafafa;
-  --destructive: #f87171;
-  --destructive-foreground: #0f0f11;
-  --success: #4ade80;
-  --success-foreground: #0f0f11;
-  --warning: #fbbf24;
-  --warning-foreground: #0f0f11;
-  --info: #38bdf8;
-  --info-foreground: #0f0f11;
-  --border: #1f1f23;
-  --input: #27272a;
-  --ring: #3f3f46;
-  --chart-1: #fafafa;
-  --chart-2: #a1a1aa;
-  --chart-3: #71717a;
-  --chart-4: #52525b;
-  --chart-5: #3f3f46;
-  --radius: 0.875rem;
-  --sidebar: #0f0f11;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #fafafa;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #1c1c20;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #1f1f23;
-  --sidebar-ring: #3f3f46;
+  --background: #eef0f3;
+  --foreground: #2a2d34;
+  --card: #eef0f3;
+  --card-foreground: #2a2d34;
+  --popover: #eef0f3;
+  --popover-foreground: #2a2d34;
+  --primary: #22c55e;
+  --primary-foreground: #ffffff;
+  --secondary: #e4e7eb;
+  --secondary-foreground: #2a2d34;
+  --muted: #e4e7eb;
+  --muted-foreground: #6b7280;
+  --accent: #e4e7eb;
+  --accent-foreground: #2a2d34;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #2a2d34;
+  --info: #0ea5e9;
+  --info-foreground: #ffffff;
+  --border: #dcdfe4;
+  --input: #d3d7dd;
+  --ring: #22c55e;
+  --chart-1: #2a2d34;
+  --chart-2: #6b7280;
+  --chart-3: #9aa1ac;
+  --chart-4: #c2c6cc;
+  --chart-5: #dcdfe4;
+  --radius: 0.75rem;
+  --sidebar: #eef0f3;
+  --sidebar-foreground: #2a2d34;
+  --sidebar-primary: #22c55e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e4e7eb;
+  --sidebar-accent-foreground: #2a2d34;
+  --sidebar-border: #dcdfe4;
+  --sidebar-ring: #22c55e;
 }
 
 @theme inline {
@@ -123,6 +127,27 @@
   input:focus {
     outline: none;
   }
+}
+
+/* Sombras Soft UI — substituem border-border nas superfícies "elevadas"
+   (cards, CTA) e "sutis" (rows de lista); "pressed" é o estado ativo/fundo
+   levemente encaixado (ex: aba ativa da bottom nav). */
+.shadow-soft-elevated {
+  box-shadow:
+    -8px -8px 16px rgba(255, 255, 255, 0.8),
+    8px 8px 16px rgba(163, 177, 198, 0.5);
+}
+
+.shadow-soft-subtle {
+  box-shadow:
+    -3px -3px 8px rgba(255, 255, 255, 0.6),
+    3px 3px 8px rgba(163, 177, 198, 0.35);
+}
+
+.shadow-soft-pressed {
+  box-shadow:
+    inset 4px 4px 8px rgba(163, 177, 198, 0.5),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes rg-toast {

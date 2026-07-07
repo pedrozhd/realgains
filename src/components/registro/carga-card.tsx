@@ -10,7 +10,7 @@ interface CargaCardProps {
 
 export function CargaCard({ carga, onChange }: CargaCardProps) {
   return (
-    <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+    <section className="shadow-soft-elevated flex flex-col gap-3 rounded-2xl bg-card p-4">
       <TypographyEyebrow>CARGA (KG)</TypographyEyebrow>
       <div className="flex items-stretch gap-2.5">
         <button

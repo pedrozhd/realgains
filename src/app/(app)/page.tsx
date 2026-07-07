@@ -45,7 +45,7 @@ export default function DashboardPage() {
                     <ExercicioGrid exercicios={dashboard.exercicios} />
                   </>
                 ) : (
-                  <section className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card p-6 text-center">
+                  <section className="shadow-soft-elevated flex flex-col items-center gap-1.5 rounded-2xl bg-card p-6 text-center">
                     <TypographyH4>Hoje é seu dia de descanso 🎉</TypographyH4>
                     <TypographyMuted className="max-w-[28ch]">
                       Nenhum treino está agendado para hoje. Ajuste sua semana em &ldquo;Meu Treino&rdquo;.

@@ -13,7 +13,7 @@ export function RepsCard({ reps, repMin, repMax, onTap, onMinus }: RepsCardProps
     <button
       type="button"
       onClick={onTap}
-      className="flex flex-col items-stretch gap-1.5 rounded-2xl border border-border bg-card p-4 text-left"
+      className="shadow-soft-elevated flex flex-col items-stretch gap-1.5 rounded-2xl bg-card p-4 text-left"
     >
       <div className="flex items-center justify-between">
         <TypographyEyebrow>REPETIÇÕES {repMin && repMax ? `(${repMin}–${repMax})` : ""}</TypographyEyebrow>

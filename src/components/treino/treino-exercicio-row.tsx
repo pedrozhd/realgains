@@ -35,7 +35,7 @@ export function TreinoExercicioRow({
   const [confirmandoRemocao, setConfirmandoRemocao] = useState(false);
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-[10px] border border-border/70 bg-background px-2.5 py-2">
+    <div className="shadow-soft-subtle flex flex-col gap-1.5 rounded-[10px] bg-background px-2.5 py-2">
       <div className="flex items-center gap-2">
         <button
           type="button"

@@ -22,11 +22,7 @@ interface TreinoDiaCardProps {
   nome: string;
   exercicios: TreinoExercicioComExercicio[];
   exerciciosOrfaos: Exercicio[];
-  isFirst: boolean;
-  isLast: boolean;
   onRename: (nome: string) => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
   onRemoveDia: () => void;
   onAddExercicio: () => void;
   onVincularExercicioExistente: (exercicioId: string) => void;
@@ -41,11 +37,7 @@ export function TreinoDiaCard({
   nome,
   exercicios,
   exerciciosOrfaos,
-  isFirst,
-  isLast,
   onRename,
-  onMoveUp,
-  onMoveDown,
   onRemoveDia,
   onAddExercicio,
   onVincularExercicioExistente,
@@ -75,29 +67,8 @@ export function TreinoDiaCard({
   }
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-3.5">
+    <section className="shadow-soft-elevated rounded-2xl bg-card p-3.5">
       <div className="flex items-center gap-1.5">
-        <div className="flex flex-none flex-col gap-0.5">
-          <button
-            type="button"
-            onClick={onMoveUp}
-            disabled={isFirst}
-            aria-label="Mover treino para cima"
-            className="text-xs leading-none text-muted-foreground disabled:opacity-30"
-          >
-            ▲
-          </button>
-          <button
-            type="button"
-            onClick={onMoveDown}
-            disabled={isLast}
-            aria-label="Mover treino para baixo"
-            className="text-xs leading-none text-muted-foreground disabled:opacity-30"
-          >
-            ▼
-          </button>
-        </div>
-
         {editandoNome ? (
           <BlurCommitInput
             value={nome}

@@ -97,7 +97,7 @@ function getVisibleSparkPoints(points: readonly SparkCoordinate[], curve: Sparkl
 export const Sparkline = memo(function Sparkline({
   ariaLabel = "Sparkline",
   className,
-  color = "currentColor",
+  color,
   curve = "smooth",
   data,
   duration = 980,
@@ -131,7 +131,7 @@ export const Sparkline = memo(function Sparkline({
       key={animationKey}
       preserveAspectRatio="none"
       role="img"
-      style={{ color } as CSSProperties}
+      style={color ? ({ color } as CSSProperties) : undefined}
       viewBox={`0 0 ${width} ${height}`}
     >
       <defs>

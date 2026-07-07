@@ -1,11 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Public_Sans } from "next/font/google";
+import { satoshi } from "./fonts";
 import "./globals.css";
-
-const publicSans = Public_Sans({
-  variable: "--font-public-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "RealGains",
@@ -17,7 +12,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#000000",
+  themeColor: "#eef0f3",
 };
 
 export default function RootLayout({
@@ -26,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${publicSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-black">{children}</body>
+    <html lang="pt-BR" className={`${satoshi.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-background">{children}</body>
     </html>
   );
 }

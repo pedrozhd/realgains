@@ -27,7 +27,7 @@ export function ExercicioRow({ exercicioId, nome, ultimaSerieLabel, tendencia }:
   return (
     <Link
       href={`/exercicio/${exercicioId}`}
-      className="flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3.5 active:opacity-80"
+      className="shadow-soft-subtle flex items-center justify-between rounded-2xl bg-card px-4 py-3.5 active:opacity-80"
     >
       <div>
         <TypographyH4>{nome}</TypographyH4>

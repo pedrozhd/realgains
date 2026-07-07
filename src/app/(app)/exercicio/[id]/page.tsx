@@ -47,20 +47,21 @@ export default function ExercicioHistoricoPage() {
           </TypographyMuted>
         ) : (
           <>
-            <section className="rounded-2xl border border-border bg-card p-4">
+            <section className="shadow-soft-elevated rounded-2xl bg-card p-4">
               <TypographyEyebrow>CARGA AO LONGO DO TEMPO</TypographyEyebrow>
               <div className="mt-3 h-[140px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={seriesAntigaPrimeiro} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
+                  <LineChart data={seriesAntigaPrimeiro} margin={{ top: 16, right: 10, bottom: 8, left: 10 }}>
                     <XAxis dataKey="data" hide />
-                    <YAxis hide domain={["dataMin", "dataMax"]} />
+                    <YAxis hide domain={["dataMin - 5", "dataMax + 5"]} />
                     <Tooltip
                       cursor={false}
                       contentStyle={{
-                        background: "#18181b",
-                        border: "1px solid #27272a",
+                        background: "#ffffff",
+                        border: "1px solid #dcdfe4",
                         borderRadius: 8,
                         fontSize: 12,
+                        color: "#2a2d34",
                       }}
                       labelFormatter={(value) => formatDataSerie(String(value))}
                       formatter={(value) => [`${formatCarga(Number(value ?? 0))} kg`, "Carga"]}
@@ -68,10 +69,24 @@ export default function ExercicioHistoricoPage() {
                     <Line
                       type="monotone"
                       dataKey="carga"
-                      stroke="#fafafa"
-                      strokeWidth={2.5}
-                      dot={false}
-                      activeDot={{ r: 4, fill: "#fafafa" }}
+                      stroke="#22c55e"
+                      strokeWidth={2}
+                      style={{ filter: "drop-shadow(0 0 6px rgba(34,197,94,0.55))" }}
+                      dot={(props: { cx?: number; cy?: number; index?: number }) => {
+                        const isLast = props.index === seriesAntigaPrimeiro.length - 1;
+                        if (!isLast || props.cx == null || props.cy == null) return <g key={props.index} />;
+                        return (
+                          <circle
+                            key={props.index}
+                            cx={props.cx}
+                            cy={props.cy}
+                            r={3}
+                            fill="#22c55e"
+                            style={{ filter: "drop-shadow(0 0 5px #22c55e)" }}
+                          />
+                        );
+                      }}
+                      activeDot={{ r: 4, fill: "#22c55e" }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -84,7 +99,7 @@ export default function ExercicioHistoricoPage() {
                 {seriesRecentePrimeiro.map((s) => (
                   <div
                     key={s.id}
-                    className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3"
+                    className="shadow-soft-subtle flex items-center justify-between rounded-xl bg-card px-4 py-3"
                   >
                     <span className="w-16 shrink-0 text-[13px] text-muted-foreground">{formatDataSerie(s.data)}</span>
                     <span className="flex-1 text-center text-[15px] font-bold">{formatCarga(s.carga)} kg</span>

@@ -23,7 +23,7 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
     <section className="flex flex-col gap-2.5">
       <TypographyEyebrow>SUA SEMANA</TypographyEyebrow>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="shadow-soft-elevated overflow-hidden rounded-2xl bg-card">
         {DIAS_SEMANA.map((d, i) => {
           const treino = treinoDoDia(d.valor);
           return (

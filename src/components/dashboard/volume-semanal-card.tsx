@@ -29,7 +29,7 @@ export function VolumeSemanalCard({ dados }: Props) {
 
   if (!temDados) {
     return (
-      <section className="flex flex-col gap-2.5 rounded-2xl border border-border bg-card p-4">
+      <section className="shadow-soft-elevated flex flex-col gap-2.5 rounded-2xl bg-card p-4">
         <TypographyEyebrow>VOLUME SEMANAL</TypographyEyebrow>
         <TypographyMuted className="py-5 text-center">Registre séries para ver seu volume</TypographyMuted>
       </section>
@@ -44,7 +44,7 @@ export function VolumeSemanalCard({ dados }: Props) {
   const IconeTendencia = subiu ? ArrowUpRight : ArrowDownLeft;
 
   return (
-    <section className="rounded-2xl border border-border bg-card p-4">
+    <section className="shadow-soft-elevated rounded-2xl bg-card p-4">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <TypographyEyebrow>VOLUME SEMANAL</TypographyEyebrow>
