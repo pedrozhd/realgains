@@ -75,7 +75,7 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="h-12 rounded-xl px-4 text-base"
+          className="shadow-soft-elevated h-12 rounded-xl border-none bg-card px-4 text-base"
         />
         <Input
           type="password"
@@ -85,13 +85,13 @@ export default function LoginPage() {
           required
           minLength={6}
           autoComplete={modo === "entrar" ? "current-password" : "new-password"}
-          className="h-12 rounded-xl px-4 text-base"
+          className="shadow-soft-elevated h-12 rounded-xl border-none bg-card px-4 text-base"
         />
 
         {erro && <p className="text-sm text-destructive">{erro}</p>}
         {mensagem && <p className="text-sm text-success">{mensagem}</p>}
 
-        <Button type="submit" disabled={carregando} className="h-12 rounded-xl text-[15px] font-bold">
+        <Button type="submit" disabled={carregando} className="shadow-soft-elevated h-12 rounded-xl text-[15px] font-bold">
           {carregando ? "Aguarde..." : modo === "entrar" ? "Entrar" : "Criar conta"}
         </Button>
       </form>
