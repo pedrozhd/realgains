@@ -24,6 +24,10 @@ function ShortcutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
         <DialogHeader>
           <DialogTitle>Atalho do RealGains</DialogTitle>
         </DialogHeader>
+        <p className="rounded-xl bg-background px-3 py-2.5 text-[13px] leading-relaxed text-muted-foreground">
+          Antes de usar, cadastre pelo menos um treino na aba &ldquo;Meu Treino&rdquo; e defina sua semana. Sem
+          isso o atalho não encontra o treino de hoje.
+        </p>
         <ol className="flex flex-col gap-2.5 text-[13px] leading-relaxed">
           <li>
             <strong className="text-foreground">1.</strong> Toque em &ldquo;Instalar atalho&rdquo; abaixo, isso abre
