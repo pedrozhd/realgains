@@ -19,6 +19,7 @@ function traduzErro(msg: string): string {
 export default function LoginPage() {
   const router = useRouter();
   const [modo, setModo] = useState<Modo>("entrar");
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -44,7 +45,11 @@ export default function LoginPage() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({ email, password: senha });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: { data: { nome: nome.trim() } },
+    });
     setCarregando(false);
     if (error) {
       setErro(traduzErro(error.message));
@@ -68,6 +73,17 @@ export default function LoginPage() {
       </div>
 
       <form onSubmit={onSubmit} className="flex flex-col gap-3.5">
+        {modo === "criar" && (
+          <Input
+            type="text"
+            placeholder="Seu nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+            autoComplete="name"
+            className="shadow-soft-elevated h-12 rounded-xl border-none bg-card px-4 text-base"
+          />
+        )}
         <Input
           type="email"
           placeholder="E-mail"
@@ -100,6 +116,7 @@ export default function LoginPage() {
         type="button"
         onClick={() => {
           setModo((m) => (m === "entrar" ? "criar" : "entrar"));
+          setNome("");
           setErro(null);
           setMensagem(null);
         }}
