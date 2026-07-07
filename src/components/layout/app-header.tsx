@@ -65,7 +65,7 @@ function ShortcutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
 export function AppHeader({
   variant,
   title,
-  backHref = "/",
+  backHref = "/dashboard",
   onBack,
   userName = "Você",
   onAvatarClick,

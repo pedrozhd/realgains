@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { CirclePlus, Dumbbell, History, LayoutGrid } from "lucide-react";
 
 const TABS = [
-  { href: "/", label: "Dashboard", icon: LayoutGrid },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
   { href: "/registro", label: "Registro", icon: CirclePlus },
   { href: "/treino", label: "Meu Treino", icon: Dumbbell },
   { href: "/exercicios", label: "Histórico", icon: History },
@@ -28,7 +28,7 @@ export function BottomNav() {
       <div className="shadow-soft-elevated absolute inset-0 rounded-3xl bg-card" />
       <div className="relative grid grid-cols-4 gap-1 px-2 py-2">
         {TABS.map(({ href, label, icon: Icon }) => {
-          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+          const active = pathname.startsWith(href);
           return (
             <Link
               key={href}

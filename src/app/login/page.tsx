@@ -40,7 +40,7 @@ export default function LoginPage() {
         setErro(traduzErro(error.message));
         return;
       }
-      router.replace("/");
+      router.replace("/dashboard");
       router.refresh();
       return;
     }
@@ -56,7 +56,7 @@ export default function LoginPage() {
       return;
     }
     if (data.session) {
-      router.replace("/");
+      router.replace("/dashboard");
       router.refresh();
       return;
     }

@@ -30,17 +30,21 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isAuthRoute = request.nextUrl.pathname.startsWith("/login");
+  const pathname = request.nextUrl.pathname;
+  const isAuthRoute = pathname.startsWith("/login");
+  const isLandingPage = pathname === "/";
 
-  if (!user && !isAuthRoute) {
+  if (!user && !isAuthRoute && !isLandingPage) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  if (user && isAuthRoute) {
+  // Quem já tem conta não precisa ver a LP/waitlist ou a tela de login de
+  // novo — manda direto pra Dashboard.
+  if (user && (isAuthRoute || isLandingPage)) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 
