@@ -13,7 +13,6 @@ const TABS = [
 
 export function BottomNav() {
   const pathname = usePathname();
-  const activeIndex = TABS.findIndex((t) => pathname.startsWith(t.href));
 
   return (
     // No fluxo normal (reserva sua própria linha) — testado em dispositivo
@@ -28,37 +27,18 @@ export function BottomNav() {
     >
       <div className="shadow-soft-elevated absolute inset-0 rounded-3xl bg-card" />
       <div className="relative grid grid-cols-4 gap-1 px-2 py-2">
-        {activeIndex !== -1 && (
-          // Pílula que desliza pra baixo da aba ativa em vez de simplesmente
-          // trocar de lugar — gap-1 (0.25rem) entra na conta pra a largura e o
-          // deslocamento baterem exatamente com as 4 colunas do grid.
-          <div
-            aria-hidden
-            className="shadow-soft-pressed absolute inset-y-0 rounded-2xl bg-background transition-transform duration-300 ease-out"
-            style={{
-              width: "calc((100% - 0.75rem) / 4)",
-              transform: `translateX(calc(${activeIndex} * ((100% - 0.75rem) / 4 + 0.25rem)))`,
-            }}
-          />
-        )}
-        {TABS.map(({ href, label, icon: Icon }, index) => {
-          const active = index === activeIndex;
+        {TABS.map(({ href, label, icon: Icon }) => {
+          const active = pathname.startsWith(href);
           return (
             <Link
               key={href}
               href={href}
-              className="relative z-10 flex flex-col items-center gap-0.5 rounded-2xl py-2 active:opacity-70"
+              className={`flex flex-col items-center gap-0.5 rounded-2xl py-2 active:opacity-70 ${
+                active ? "shadow-soft-pressed bg-background" : ""
+              }`}
             >
-              <Icon
-                size={20}
-                strokeWidth={2}
-                className={`transition-colors duration-300 ${active ? "text-primary" : "text-muted-foreground"}`}
-              />
-              <span
-                className={`text-[10px] font-bold transition-colors duration-300 ${
-                  active ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
+              <Icon size={20} strokeWidth={2} className={active ? "text-primary" : "text-muted-foreground"} />
+              <span className={`text-[10px] font-bold ${active ? "text-primary" : "text-muted-foreground"}`}>
                 {label}
               </span>
             </Link>
