@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyEyebrow } from "@/components/ui/typography";
 
 const PASSO_CARGA = 2.5;
@@ -10,7 +11,7 @@ interface CargaCardProps {
 
 export function CargaCard({ carga, onChange }: CargaCardProps) {
   return (
-    <section className="shadow-soft-elevated flex flex-col gap-3 rounded-2xl bg-card p-4">
+    <SoftCard className="flex flex-col gap-3 p-4">
       <TypographyEyebrow>CARGA (KG)</TypographyEyebrow>
       <div className="flex items-stretch gap-2.5">
         <button
@@ -40,6 +41,6 @@ export function CargaCard({ carga, onChange }: CargaCardProps) {
           +
         </button>
       </div>
-    </section>
+    </SoftCard>
   );
 }

@@ -20,13 +20,23 @@ interface AccountSheetProps {
   onOpenChange: (open: boolean) => void;
   email: string | null;
   nome: string | null;
-  onUpdateNome: (nome: string) => void;
+  onUpdateNome: (nome: string) => Promise<void>;
 }
 
 export function AccountSheet({ open, onOpenChange, email, nome, onUpdateNome }: AccountSheetProps) {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const [copiado, setCopiado] = useState(false);
+  const [erroNome, setErroNome] = useState<string | null>(null);
+
+  async function onCommitNome(novoNome: string) {
+    setErroNome(null);
+    try {
+      await onUpdateNome(novoNome);
+    } catch {
+      setErroNome("Não deu pra salvar o nome — tenta de novo.");
+    }
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -63,10 +73,11 @@ export function AccountSheet({ open, onOpenChange, email, nome, onUpdateNome }: 
           <TypographyEyebrow>SEU NOME</TypographyEyebrow>
           <BlurCommitInput
             value={nome ?? ""}
-            onCommit={onUpdateNome}
+            onCommit={onCommitNome}
             placeholder="Como quer ser chamado?"
             className="h-11 rounded-xl border-border bg-background px-3 text-sm"
           />
+          {erroNome && <p className="text-xs text-destructive">{erroNome}</p>}
         </div>
 
         <div className="flex flex-col gap-2 px-4">

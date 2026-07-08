@@ -8,6 +8,7 @@ import {
   PricingCardParagraph,
   PricingCardPrice,
 } from "@/components/ui/animated-pricing-card";
+import { SoftCard } from "@/components/ui/soft-card";
 
 const PASSOS = [
   {
@@ -129,13 +130,13 @@ export default function LandingPage() {
 
           <div className="mt-10 grid gap-4 text-left md:grid-cols-3">
             {PASSOS.map((passo) => (
-              <div key={passo.numero} className="shadow-soft-elevated rounded-2xl bg-card p-6">
+              <SoftCard key={passo.numero} as="div" className="p-6">
                 <span className="shadow-soft-subtle flex h-8 w-8 items-center justify-center rounded-full bg-background text-[13px] font-bold text-primary">
                   {passo.numero}
                 </span>
                 <h3 className="mt-4 text-[17px] font-bold tracking-tight">{passo.titulo}</h3>
                 <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">{passo.descricao}</p>
-              </div>
+              </SoftCard>
             ))}
           </div>
         </div>

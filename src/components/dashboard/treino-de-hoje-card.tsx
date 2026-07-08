@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyEyebrow, TypographyH1, TypographyMuted } from "@/components/ui/typography";
 
 interface Props {
@@ -12,7 +13,7 @@ export function TreinoDeHojeCard({ treino }: Props) {
   }`;
 
   return (
-    <section className="shadow-soft-elevated flex flex-col gap-3.5 rounded-2xl bg-card p-4">
+    <SoftCard className="flex flex-col gap-3.5 p-4">
       <div>
         <TypographyEyebrow className="text-primary">TREINO DE HOJE</TypographyEyebrow>
         <TypographyH1 className="mt-1">{treino.nome}</TypographyH1>
@@ -25,6 +26,6 @@ export function TreinoDeHojeCard({ treino }: Props) {
       >
         Iniciar registro
       </Button>
-    </section>
+    </SoftCard>
   );
 }

@@ -28,18 +28,36 @@ export function getUltimaSerie(seriesDoExercicio: Serie[]): Serie | null {
  * "subiu" needs an increase vs the previous session. Absent that, we only
  * call it "estagnado" once carga has failed to move for 3 sessions running —
  * otherwise a single flat session would look identical to a real plateau.
+ *
+ * A "sessão" é um dia de treino, não uma série individual — várias séries no
+ * mesmo dia (o caso comum: 3 séries do mesmo exercício numa sessão só) viram
+ * uma sessão representada pela melhor série do dia. Sem esse agrupamento, o
+ * primeiro dia de treino (com 3 séries de carga igual) já batia o critério de
+ * "3 sessões sem subir" e virava "estagnado" antes mesmo de existir uma
+ * segunda sessão de verdade.
  */
 export function getTendencia(seriesDoExercicio: Serie[]): Tendencia | null {
-  const ordenadas = [...seriesDoExercicio].sort((a, b) => a.data.localeCompare(b.data));
-  if (ordenadas.length < 2) return null;
+  const seriesPorDia = new Map<string, Serie[]>();
+  for (const s of seriesDoExercicio) {
+    const dia = getDataLocalISO(new Date(s.data), APP_TIMEZONE);
+    const doDia = seriesPorDia.get(dia);
+    if (doDia) doDia.push(s);
+    else seriesPorDia.set(dia, [s]);
+  }
 
-  const ultima = ordenadas[ordenadas.length - 1];
-  const anterior = ordenadas[ordenadas.length - 2];
+  const sessoes = [...seriesPorDia.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([, doDia]) => [...doDia].sort((a, b) => b.carga - a.carga || b.reps - a.reps)[0]);
+
+  if (sessoes.length < 2) return null;
+
+  const ultima = sessoes[sessoes.length - 1];
+  const anterior = sessoes[sessoes.length - 2];
   const progrediu =
     ultima.carga > anterior.carga || (ultima.carga === anterior.carga && ultima.reps > anterior.reps);
   if (progrediu) return "subiu";
 
-  const ultimasTres = ordenadas.slice(-3);
+  const ultimasTres = sessoes.slice(-3);
   const plato = ultimasTres.length === 3 && ultimasTres.every((s) => s.carga <= anterior.carga);
   return plato ? "estagnado" : "manteve";
 }

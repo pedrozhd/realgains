@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyEyebrow } from "@/components/ui/typography";
 import { DIAS_SEMANA } from "@/lib/semana";
 import type { Treino } from "@/lib/types";
@@ -23,7 +24,7 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
     <section className="flex flex-col gap-2.5">
       <TypographyEyebrow>SUA SEMANA</TypographyEyebrow>
 
-      <div className="shadow-soft-elevated overflow-hidden rounded-2xl bg-card">
+      <SoftCard as="div" className="overflow-hidden">
         {DIAS_SEMANA.map((d, i) => {
           const treino = treinoDoDia(d.valor);
           return (
@@ -48,7 +49,7 @@ export function SemanaCard({ treinos, onSetTreinoDoDia }: SemanaCardProps) {
             </button>
           );
         })}
-      </div>
+      </SoftCard>
 
       <Dialog open={diaAberto !== null} onOpenChange={(open) => !open && setDiaAberto(null)}>
         <DialogContent className="max-w-[340px] rounded-2xl border-border bg-card">

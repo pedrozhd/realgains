@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ExercicioGrid } from "@/components/dashboard/exercicio-grid";
 import { TreinoDeHojeCard } from "@/components/dashboard/treino-de-hoje-card";
 import { VolumeSemanalCard } from "@/components/dashboard/volume-semanal-card";
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyH4, TypographyMuted } from "@/components/ui/typography";
 import { getDashboardData } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
@@ -31,7 +32,11 @@ export default function DashboardPage() {
   return (
     <>
       <AppHeader variant="dashboard" userName={userName} onAvatarClick={() => setContaAberta(true)} />
-      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      {/* pt-6: dá espaço pro brilho do shadow-soft-elevated do primeiro card se
+          espalhar pra cima (offset -8px + blur 16px ≈ 24px) antes de esbarrar
+          na borda deste container com overflow — sem esse respiro, o brilho é
+          cortado em vez de esmaecer, e a aresta dura parece colada no header. */}
+      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pt-6 pb-6">
         {loading ? (
           <TypographyMuted className="flex-1 py-10 text-center">Carregando...</TypographyMuted>
         ) : treinos.length === 0 ? (
@@ -55,12 +60,12 @@ export default function DashboardPage() {
                     <ExercicioGrid exercicios={dashboard.exercicios} />
                   </>
                 ) : (
-                  <section className="shadow-soft-elevated flex flex-col items-center gap-1.5 rounded-2xl bg-card p-6 text-center">
+                  <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
                     <TypographyH4>Hoje é seu dia de descanso 🎉</TypographyH4>
                     <TypographyMuted className="max-w-[28ch]">
                       Nenhum treino está agendado para hoje. Ajuste sua semana em &ldquo;Meu Treino&rdquo;.
                     </TypographyMuted>
-                  </section>
+                  </SoftCard>
                 )}
                 <VolumeSemanalCard dados={dashboard.volumeSemanal} />
               </>

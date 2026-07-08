@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { AppHeader } from "@/components/layout/app-header";
 import { EditarSerieDialog } from "@/components/registro/editar-serie-dialog";
 import { QualidadeIcon } from "@/components/registro/qualidade-icon";
+import { SoftCard } from "@/components/ui/soft-card";
+import { ToastPill } from "@/components/ui/toast-pill";
 import { TypographyEyebrow, TypographyMuted } from "@/components/ui/typography";
 import { formatCarga } from "@/lib/dashboard";
 import { useAppStore } from "@/lib/store";
@@ -24,10 +26,22 @@ export default function ExercicioHistoricoPage() {
   const params = useParams<{ id: string }>();
   const { exercicios, series, loading, updateSerie, removeSerie } = useAppStore();
   const [serieEditando, setSerieEditando] = useState<Serie | null>(null);
+  const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
+
+  const toastKeyRef = useRef(0);
+  function mostrarToast(msg: string) {
+    toastKeyRef.current += 1;
+    setToast({ msg, key: toastKeyRef.current });
+    window.setTimeout(() => setToast(null), 1800);
+  }
 
   async function onRemoverSerie(serieId: string) {
     if (!window.confirm("Apagar essa série? Não dá pra desfazer.")) return;
-    await removeSerie(serieId);
+    try {
+      await removeSerie(serieId);
+    } catch {
+      mostrarToast("Não deu pra apagar — tenta de novo");
+    }
   }
 
   const exercicio = exercicios.find((e) => e.id === params.id);
@@ -50,14 +64,16 @@ export default function ExercicioHistoricoPage() {
   return (
     <>
       <AppHeader variant="back" title={exercicio?.nome || "Exercício"} onBack={() => router.back()} />
-      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      {/* pt-6: espaço pro brilho do shadow-soft-elevated do primeiro card não
+          ser cortado pela borda deste container com overflow (ver dashboard/page.tsx). */}
+      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pt-6 pb-6">
         {seriesRecentePrimeiro.length === 0 ? (
           <TypographyMuted className="flex-1 py-10 text-center">
             Nenhuma série registrada ainda para este exercício.
           </TypographyMuted>
         ) : (
           <>
-            <section className="shadow-soft-elevated rounded-2xl bg-card p-4">
+            <SoftCard className="p-4">
               <TypographyEyebrow>CARGA AO LONGO DO TEMPO</TypographyEyebrow>
               <div className="mt-3 h-[140px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -101,7 +117,7 @@ export default function ExercicioHistoricoPage() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </section>
+            </SoftCard>
 
             <section className="flex flex-col gap-2.5">
               <TypographyEyebrow>TODAS AS SÉRIES ({seriesRecentePrimeiro.length})</TypographyEyebrow>
@@ -140,6 +156,8 @@ export default function ExercicioHistoricoPage() {
           </>
         )}
       </main>
+
+      <ToastPill message={toast?.msg ?? null} toastKey={toast?.key ?? 0} />
 
       <EditarSerieDialog
         serie={serieEditando}

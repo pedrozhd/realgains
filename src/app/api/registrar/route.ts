@@ -34,13 +34,15 @@ export async function POST(request: NextRequest) {
   if (
     !body?.token ||
     !body.exercicio_id ||
-    Number.isNaN(carga) ||
-    Number.isNaN(reps) ||
+    !Number.isFinite(carga) ||
+    carga <= 0 ||
+    !Number.isFinite(reps) ||
+    reps <= 0 ||
     !body.qualidade ||
     !QUALIDADES.includes(body.qualidade)
   ) {
     return NextResponse.json(
-      { error: "campos obrigatórios: token, exercicio_id, carga, reps, qualidade (boa | razoavel | ruim)" },
+      { error: "campos obrigatórios: token, exercicio_id, carga > 0, reps > 0, qualidade (boa | razoavel | ruim)" },
       { status: 400 },
     );
   }

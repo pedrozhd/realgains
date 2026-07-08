@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
@@ -39,22 +39,35 @@ export default function RegistroPage() {
     return ultima ? ultima.carga : 0;
   }
 
-  const [carga, setCarga] = useState(() => (curEx ? ultimaCargaDe(curEx.exercicio_id) : 0));
+  const [carga, setCarga] = useState(0);
   const [reps, setReps] = useState(0);
   const [qualidade, setQualidade] = useState<Qualidade | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
+  const [exercicioSincronizado, setExercicioSincronizado] = useState<string | undefined>(undefined);
 
+  // Reseta os campos sempre que o exercício ativo muda — inclusive na
+  // primeira vez que ele deixa de ser `undefined`, quando os dados terminam
+  // de carregar. Sem isso, a carga inicial (calculada uma única vez, enquanto
+  // a store ainda estava carregando) ficava travada em 0 depois de um
+  // refresh ou de um deep-link direto pra /registro. Ajustado durante o
+  // render (mesmo padrão de blur-commit-input.tsx) em vez de um efeito, pra
+  // não custar um commit extra.
+  if (curEx && curEx.exercicio_id !== exercicioSincronizado) {
+    setExercicioSincronizado(curEx.exercicio_id);
+    setCarga(ultimaCargaDe(curEx.exercicio_id));
+    setReps(0);
+    setQualidade(null);
+  }
+
+  const toastKeyRef = useRef(0);
   function mostrarToast(msg: string) {
-    setToast({ msg, key: Date.now() });
+    toastKeyRef.current += 1;
+    setToast({ msg, key: toastKeyRef.current });
     window.setTimeout(() => setToast(null), 1800);
   }
 
   function selecionarExercicio(index: number) {
     setActiveIndex(index);
-    const ex = exerciciosDoDia[index];
-    setCarga(ex ? ultimaCargaDe(ex.exercicio_id) : 0);
-    setReps(0);
-    setQualidade(null);
   }
 
   function onRepTap() {
@@ -65,7 +78,11 @@ export default function RegistroPage() {
 
   async function onRemoverSerie(serieId: string) {
     if (!window.confirm("Apagar essa série? Não dá pra desfazer.")) return;
-    await removeSerie(serieId);
+    try {
+      await removeSerie(serieId);
+    } catch {
+      mostrarToast("Não deu pra apagar — tenta de novo");
+    }
   }
 
   async function onSave() {
@@ -122,7 +139,9 @@ export default function RegistroPage() {
   return (
     <>
       <AppHeader variant="title" title="Registro" />
-      <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pb-4">
+      {/* pt-6: espaço pro brilho do shadow-soft-elevated do primeiro card não
+          ser cortado pela borda deste container com overflow (ver dashboard/page.tsx). */}
+      <main className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 pt-6 pb-4">
         <div className="flex flex-col gap-4">
           <ExercicioTabs
             nomes={exerciciosDoDia.map((te) => te.exercicio?.nome ?? "")}

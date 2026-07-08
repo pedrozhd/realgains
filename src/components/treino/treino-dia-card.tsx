@@ -16,6 +16,7 @@ import { Pencil } from "lucide-react";
 import { AdicionarExercicioDialog } from "@/components/treino/adicionar-exercicio-dialog";
 import { SortableTreinoExercicioRow } from "@/components/treino/sortable-treino-exercicio-row";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
+import { SoftCard } from "@/components/ui/soft-card";
 import type { Exercicio, TreinoExercicioComExercicio } from "@/lib/types";
 
 interface TreinoDiaCardProps {
@@ -67,7 +68,7 @@ export function TreinoDiaCard({
   }
 
   return (
-    <section className="shadow-soft-elevated rounded-2xl bg-card p-3.5">
+    <SoftCard className="p-3.5">
       <div className="flex items-center gap-1.5">
         {editandoNome ? (
           <BlurCommitInput
@@ -91,7 +92,11 @@ export function TreinoDiaCard({
 
         <button
           type="button"
-          onClick={onRemoveDia}
+          onClick={() => {
+            if (window.confirm(`Apagar o treino "${nome || "sem nome"}"? Isso não pode ser desfeito.`)) {
+              onRemoveDia();
+            }
+          }}
           aria-label="Remover treino"
           className="px-1.5 text-lg text-muted-foreground"
         >
@@ -137,6 +142,6 @@ export function TreinoDiaCard({
         onCriarNovo={onAddExercicio}
         onVincularExistente={onVincularExercicioExistente}
       />
-    </section>
+    </SoftCard>
   );
 }

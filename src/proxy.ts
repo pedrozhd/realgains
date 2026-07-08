@@ -6,5 +6,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  // "auth" fica de fora: /auth/callback processa a confirmação de e-mail /
+  // magic link antes de existir sessão, então gatear essa rota atrás do
+  // login (como as demais) impede a troca do code por sessão de completar.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api|auth|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

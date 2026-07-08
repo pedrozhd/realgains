@@ -44,7 +44,9 @@ export default function MeuTreinoPage() {
   return (
     <>
       <AppHeader variant="title" title="Meu Treino" />
-      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pb-6">
+      {/* pt-6: espaço pro brilho do shadow-soft-elevated do primeiro card não
+          ser cortado pela borda deste container com overflow (ver dashboard/page.tsx). */}
+      <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-5 pt-6 pb-6">
         <div className="flex flex-col gap-4">
           {treinosOrdenados.map((treino) => {
             const exerciciosDoTreino = treinoExercicios

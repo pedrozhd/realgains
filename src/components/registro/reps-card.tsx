@@ -1,3 +1,4 @@
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyEyebrow } from "@/components/ui/typography";
 
 interface RepsCardProps {
@@ -10,10 +11,11 @@ interface RepsCardProps {
 
 export function RepsCard({ reps, repMin, repMax, onTap, onMinus }: RepsCardProps) {
   return (
-    <button
+    <SoftCard
+      as="button"
       type="button"
       onClick={onTap}
-      className="shadow-soft-elevated flex flex-col items-stretch gap-1.5 rounded-2xl bg-card p-4 text-left"
+      className="flex flex-col items-stretch gap-1.5 p-4 text-left"
     >
       <div className="flex items-center justify-between">
         <TypographyEyebrow>REPETIÇÕES {repMin && repMax ? `(${repMin}–${repMax})` : ""}</TypographyEyebrow>
@@ -38,6 +40,6 @@ export function RepsCard({ reps, repMin, repMax, onTap, onMinus }: RepsCardProps
       </div>
       <div className="py-1.5 text-center text-[56px] leading-none font-extrabold tracking-tight">{reps}</div>
       <p className="text-center text-xs text-muted-foreground/70">+1 por toque</p>
-    </button>
+    </SoftCard>
   );
 }

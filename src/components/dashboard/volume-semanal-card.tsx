@@ -3,6 +3,7 @@
 import NumberFlow, { type Format } from "@number-flow/react";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { Sparkline } from "@/components/ui/sparkline";
+import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyEyebrow, TypographyMuted } from "@/components/ui/typography";
 import type { VolumeSemana } from "@/lib/types";
 
@@ -29,10 +30,10 @@ export function VolumeSemanalCard({ dados }: Props) {
 
   if (!temDados) {
     return (
-      <section className="shadow-soft-elevated flex flex-col gap-2.5 rounded-2xl bg-card p-4">
+      <SoftCard className="flex flex-col gap-2.5 p-4">
         <TypographyEyebrow>VOLUME SEMANAL</TypographyEyebrow>
         <TypographyMuted className="py-5 text-center">Registre séries para ver seu volume</TypographyMuted>
-      </section>
+      </SoftCard>
     );
   }
 
@@ -44,7 +45,7 @@ export function VolumeSemanalCard({ dados }: Props) {
   const IconeTendencia = subiu ? ArrowUpRight : ArrowDownLeft;
 
   return (
-    <section className="shadow-soft-elevated rounded-2xl bg-card p-4">
+    <SoftCard className="p-4">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <TypographyEyebrow>VOLUME SEMANAL</TypographyEyebrow>
@@ -69,6 +70,6 @@ export function VolumeSemanalCard({ dados }: Props) {
         showEndpoint
         strokeWidth={2}
       />
-    </section>
+    </SoftCard>
   );
 }
