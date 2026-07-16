@@ -72,7 +72,7 @@ export function AppHeader({
   onAvatarClick,
 }: AppHeaderProps) {
   const [shortcutOpen, setShortcutOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
 
   if (variant === "dashboard") {
     const inicial = userName.trim().charAt(0).toUpperCase();
@@ -83,13 +83,17 @@ export function AppHeader({
           <p className="mt-0.5 text-[13px] text-muted-foreground">Bora treinar hoje?</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          {/* Os dois ícones ficam no DOM e o CSS decide qual aparece (variante dark:).
+              Renderizar condicionalmente via estado causaria hydration mismatch, já que
+              o servidor não conhece o tema salvo no localStorage. */}
           <button
             type="button"
             onClick={toggleTheme}
-            aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
+            aria-label="Alternar tema"
             className="shadow-soft-elevated flex h-10 w-10 items-center justify-center rounded-full bg-card text-primary"
           >
-            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            <Sun size={16} className="hidden dark:block" />
+            <Moon size={16} className="dark:hidden" />
           </button>
           <button
             type="button"
