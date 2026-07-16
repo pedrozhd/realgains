@@ -35,11 +35,17 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
-              // Clicar na aba em que já se está não navega pra lugar nenhum
-              // (é a mesma URL), então sem isso o toque parecia não fazer
-              // nada — em vez disso, rebusca os dados na hora.
-              onClick={() => {
-                if (active) refresh();
+              // O Dashboard sempre carrega via navegação completa (window.location),
+              // de qualquer aba — garante dados frescos com feedback visível de
+              // reload. Nas demais abas, tocar na aba já ativa rebusca os dados
+              // (é a mesma URL, então o Link sozinho não faria nada).
+              onClick={(e) => {
+                if (href === "/dashboard") {
+                  e.preventDefault();
+                  window.location.href = href;
+                } else if (active) {
+                  refresh();
+                }
               }}
               className={`flex flex-col items-center gap-0.5 rounded-2xl py-2 active:opacity-70 ${
                 active ? "shadow-soft-pressed bg-background" : ""
