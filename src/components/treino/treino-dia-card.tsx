@@ -22,7 +22,7 @@ import type { Exercicio, TreinoExercicioComExercicio } from "@/lib/types";
 interface TreinoDiaCardProps {
   nome: string;
   exercicios: TreinoExercicioComExercicio[];
-  exerciciosOrfaos: Exercicio[];
+  exerciciosDisponiveis: Exercicio[];
   onRename: (nome: string) => void;
   onRemoveDia: () => void;
   onAddExercicio: () => void;
@@ -37,7 +37,7 @@ interface TreinoDiaCardProps {
 export function TreinoDiaCard({
   nome,
   exercicios,
-  exerciciosOrfaos,
+  exerciciosDisponiveis,
   onRename,
   onRemoveDia,
   onAddExercicio,
@@ -115,6 +115,7 @@ export function TreinoDiaCard({
                 numSeries={te.num_series}
                 repMin={te.rep_min}
                 repMax={te.rep_max}
+                compartilhadoCom={te.compartilhadoCom}
                 onRename={(novoNome) => onRenameExercicio(te.exercicio_id, novoNome)}
                 onNumSeriesChange={(v) => onSeriesConfigChange(te.id, v, te.rep_min, te.rep_max)}
                 onRepMinChange={(v) => onSeriesConfigChange(te.id, te.num_series, v, te.rep_max)}
@@ -138,7 +139,7 @@ export function TreinoDiaCard({
       <AdicionarExercicioDialog
         open={adicionandoExercicio}
         onOpenChange={setAdicionandoExercicio}
-        exerciciosOrfaos={exerciciosOrfaos}
+        exerciciosDisponiveis={exerciciosDisponiveis}
         onCriarNovo={onAddExercicio}
         onVincularExistente={onVincularExercicioExistente}
       />

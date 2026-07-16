@@ -7,7 +7,7 @@ import type { Exercicio } from "@/lib/types";
 interface AdicionarExercicioDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  exerciciosOrfaos: Exercicio[];
+  exerciciosDisponiveis: Exercicio[];
   onCriarNovo: () => void;
   onVincularExistente: (exercicioId: string) => void;
 }
@@ -15,7 +15,7 @@ interface AdicionarExercicioDialogProps {
 export function AdicionarExercicioDialog({
   open,
   onOpenChange,
-  exerciciosOrfaos,
+  exerciciosDisponiveis,
   onCriarNovo,
   onVincularExistente,
 }: AdicionarExercicioDialogProps) {
@@ -24,8 +24,8 @@ export function AdicionarExercicioDialog({
       <DialogContent className="max-w-[340px] rounded-2xl border-border bg-card">
         <DialogHeader>
           <DialogTitle>Adicionar exercício</DialogTitle>
-          {exerciciosOrfaos.length > 0 && (
-            <DialogDescription>Crie um novo ou traga de volta um que já tem histórico.</DialogDescription>
+          {exerciciosDisponiveis.length > 0 && (
+            <DialogDescription>Crie um novo ou reaproveite um que já existe, com o histórico junto.</DialogDescription>
           )}
         </DialogHeader>
 
@@ -41,10 +41,10 @@ export function AdicionarExercicioDialog({
             + Criar exercício novo
           </button>
 
-          {exerciciosOrfaos.length > 0 && (
+          {exerciciosDisponiveis.length > 0 && (
             <>
-              <TypographyEyebrow className="mt-2 px-1">SEM TREINO ATRIBUÍDO</TypographyEyebrow>
-              {exerciciosOrfaos.map((ex) => (
+              <TypographyEyebrow className="mt-2 px-1">JÁ EXISTENTES</TypographyEyebrow>
+              {exerciciosDisponiveis.map((ex) => (
                 <button
                   key={ex.id}
                   type="button"

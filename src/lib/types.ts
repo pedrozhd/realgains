@@ -42,6 +42,8 @@ export interface Serie {
 /** treino_exercicios joined with its exercicio, as consumed by the UI. */
 export interface TreinoExercicioComExercicio extends TreinoExercicio {
   exercicio: Exercicio;
+  /** Nomes de outros treinos que também usam este mesmo exercicio_id. */
+  compartilhadoCom: string[];
 }
 
 /** treino joined with its ordered exercicios, as consumed by the UI. */

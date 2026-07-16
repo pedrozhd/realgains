@@ -10,6 +10,7 @@ interface SortableTreinoExercicioRowProps {
   numSeries: number;
   repMin: number;
   repMax: number;
+  compartilhadoCom: string[];
   onRename: (nome: string) => void;
   onNumSeriesChange: (value: number) => void;
   onRepMinChange: (value: number) => void;

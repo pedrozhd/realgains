@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type HTMLAttributes } from "react";
-import { GripVertical } from "lucide-react";
+import { GripVertical, Link2 } from "lucide-react";
 import { BlurCommitInput } from "@/components/ui/blur-commit-input";
 import { RemoverExercicioDialog } from "@/components/treino/remover-exercicio-dialog";
 
@@ -10,6 +10,8 @@ interface TreinoExercicioRowProps {
   numSeries: number;
   repMin: number;
   repMax: number;
+  /** Nomes de outros treinos que também usam este mesmo exercício (histórico compartilhado). */
+  compartilhadoCom: string[];
   onRename: (nome: string) => void;
   onNumSeriesChange: (value: number) => void;
   onRepMinChange: (value: number) => void;
@@ -24,6 +26,7 @@ export function TreinoExercicioRow({
   numSeries,
   repMin,
   repMax,
+  compartilhadoCom,
   onRename,
   onNumSeriesChange,
   onRepMinChange,
@@ -52,6 +55,15 @@ export function TreinoExercicioRow({
           placeholder="Exercício"
           className="h-auto min-w-0 flex-1 border-none bg-transparent px-0 py-1 text-sm font-semibold shadow-none focus-visible:ring-0"
         />
+
+        {compartilhadoCom.length > 0 && (
+          <span
+            className="shrink-0 text-muted-foreground"
+            title={`Mesmo exercício também em: ${compartilhadoCom.join(", ")}`}
+          >
+            <Link2 size={14} aria-label={`Mesmo exercício também em: ${compartilhadoCom.join(", ")}`} />
+          </span>
+        )}
 
         <button
           type="button"

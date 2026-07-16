@@ -5,7 +5,7 @@ import { SemanaCard } from "@/components/treino/semana-card";
 import { TreinoDiaCard } from "@/components/treino/treino-dia-card";
 import { TypographyMuted } from "@/components/ui/typography";
 import { useAppStore } from "@/lib/store";
-import type { TreinoExercicioComExercicio } from "@/lib/types";
+import type { Exercicio, TreinoExercicio } from "@/lib/types";
 
 export default function MeuTreinoPage() {
   const {
@@ -27,8 +27,6 @@ export default function MeuTreinoPage() {
   } = useAppStore();
 
   const treinosOrdenados = [...treinos].sort((a, b) => a.ordem - b.ordem);
-  const idsComTreino = new Set(treinoExercicios.map((te) => te.exercicio_id));
-  const exerciciosOrfaos = exercicios.filter((e) => !idsComTreino.has(e.id));
 
   if (loading) {
     return (
@@ -52,15 +50,24 @@ export default function MeuTreinoPage() {
             const exerciciosDoTreino = treinoExercicios
               .filter((te) => te.treino_id === treino.id)
               .map((te) => ({ ...te, exercicio: exercicios.find((e) => e.id === te.exercicio_id) }))
-              .filter((te): te is TreinoExercicioComExercicio => te.exercicio !== undefined)
-              .sort((a, b) => a.ordem - b.ordem);
+              .filter((te): te is TreinoExercicio & { exercicio: Exercicio } => te.exercicio !== undefined)
+              .sort((a, b) => a.ordem - b.ordem)
+              .map((te) => ({
+                ...te,
+                compartilhadoCom: treinoExercicios
+                  .filter((outro) => outro.exercicio_id === te.exercicio_id && outro.treino_id !== treino.id)
+                  .map((outro) => treinos.find((t) => t.id === outro.treino_id)?.nome || "Sem nome"),
+              }));
+
+            const idsNesteTreino = new Set(exerciciosDoTreino.map((te) => te.exercicio_id));
+            const exerciciosDisponiveis = exercicios.filter((e) => !idsNesteTreino.has(e.id));
 
             return (
               <TreinoDiaCard
                 key={treino.id}
                 nome={treino.nome}
                 exercicios={exerciciosDoTreino}
-                exerciciosOrfaos={exerciciosOrfaos}
+                exerciciosDisponiveis={exerciciosDisponiveis}
                 onRename={(nome) => renameTreino(treino.id, nome)}
                 onRemoveDia={() => removeTreino(treino.id)}
                 onAddExercicio={() => addExercicioATreino(treino.id)}
