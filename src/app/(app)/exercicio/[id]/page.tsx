@@ -74,12 +74,25 @@ export default function ExercicioHistoricoPage() {
         ) : (
           <>
             <SoftCard className="p-4">
-              <TypographyEyebrow>CARGA AO LONGO DO TEMPO</TypographyEyebrow>
+              <div className="flex items-center justify-between gap-3">
+                <TypographyEyebrow>CARGA E REPETIÇÕES</TypographyEyebrow>
+                <div className="flex shrink-0 items-center gap-3 text-[11px] font-semibold text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    Carga
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-info" />
+                    Reps
+                  </span>
+                </div>
+              </div>
               <div className="mt-3 h-[140px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={seriesAntigaPrimeiro} margin={{ top: 16, right: 10, bottom: 8, left: 10 }}>
                     <XAxis dataKey="data" hide />
-                    <YAxis hide domain={["dataMin - 5", "dataMax + 5"]} />
+                    <YAxis yAxisId="carga" hide domain={["dataMin - 5", "dataMax + 5"]} />
+                    <YAxis yAxisId="reps" orientation="right" hide domain={["dataMin - 2", "dataMax + 2"]} />
                     <Tooltip
                       cursor={false}
                       contentStyle={{
@@ -90,9 +103,14 @@ export default function ExercicioHistoricoPage() {
                         color: "var(--popover-foreground)",
                       }}
                       labelFormatter={(value) => formatDataSerie(String(value))}
-                      formatter={(value) => [`${formatCarga(Number(value ?? 0))} kg`, "Carga"]}
+                      formatter={(value, name) =>
+                        name === "reps"
+                          ? [`${value} reps`, "Repetições"]
+                          : [`${formatCarga(Number(value ?? 0))} kg`, "Carga"]
+                      }
                     />
                     <Line
+                      yAxisId="carga"
                       type="monotone"
                       dataKey="carga"
                       stroke="#22c55e"
@@ -113,6 +131,16 @@ export default function ExercicioHistoricoPage() {
                         );
                       }}
                       activeDot={{ r: 4, fill: "#22c55e" }}
+                    />
+                    <Line
+                      yAxisId="reps"
+                      type="monotone"
+                      dataKey="reps"
+                      stroke="var(--info)"
+                      strokeWidth={2}
+                      strokeDasharray="4 3"
+                      dot={false}
+                      activeDot={{ r: 4, fill: "var(--info)" }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
