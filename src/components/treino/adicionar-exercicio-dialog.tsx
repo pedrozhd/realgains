@@ -21,7 +21,7 @@ export function AdicionarExercicioDialog({
 }: AdicionarExercicioDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[340px] rounded-2xl border-border bg-card">
+      <DialogContent className="flex max-h-[80vh] max-w-[340px] flex-col rounded-2xl border-border bg-card">
         <DialogHeader>
           <DialogTitle>Adicionar exercício</DialogTitle>
           {exerciciosDisponiveis.length > 0 && (
@@ -29,34 +29,36 @@ export function AdicionarExercicioDialog({
           )}
         </DialogHeader>
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-h-0 flex-1 flex-col gap-1.5">
           <button
             type="button"
             onClick={() => {
               onCriarNovo();
               onOpenChange(false);
             }}
-            className="rounded-xl border border-dashed border-input px-4 py-3 text-left text-sm font-semibold text-muted-foreground"
+            className="shrink-0 rounded-xl border border-dashed border-input px-4 py-3 text-left text-sm font-semibold text-muted-foreground"
           >
             + Criar exercício novo
           </button>
 
           {exerciciosDisponiveis.length > 0 && (
             <>
-              <TypographyEyebrow className="mt-2 px-1">JÁ EXISTENTES</TypographyEyebrow>
-              {exerciciosDisponiveis.map((ex) => (
-                <button
-                  key={ex.id}
-                  type="button"
-                  onClick={() => {
-                    onVincularExistente(ex.id);
-                    onOpenChange(false);
-                  }}
-                  className="rounded-xl border border-border px-4 py-3 text-left text-sm font-semibold"
-                >
-                  {ex.nome || "Exercício sem nome"}
-                </button>
-              ))}
+              <TypographyEyebrow className="mt-2 shrink-0 px-1">JÁ EXISTENTES</TypographyEyebrow>
+              <div className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto">
+                {exerciciosDisponiveis.map((ex) => (
+                  <button
+                    key={ex.id}
+                    type="button"
+                    onClick={() => {
+                      onVincularExistente(ex.id);
+                      onOpenChange(false);
+                    }}
+                    className="shrink-0 rounded-xl border border-border px-4 py-3 text-left text-sm font-semibold"
+                  >
+                    {ex.nome || "Exercício sem nome"}
+                  </button>
+                ))}
+              </div>
             </>
           )}
         </div>
