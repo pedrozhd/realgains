@@ -30,7 +30,7 @@ export function CargaCard({ carga, onChange }: CargaCardProps) {
           }}
           inputMode="decimal"
           placeholder="0"
-          className="h-[60px] flex-1 border-none bg-transparent px-0 text-center text-4xl font-extrabold tracking-tight shadow-none focus-visible:ring-0"
+          className="h-[60px] flex-1 border-none bg-transparent px-0 text-center text-4xl font-extrabold tracking-tight shadow-none focus-visible:ring-0 dark:bg-transparent"
         />
         <button
           type="button"

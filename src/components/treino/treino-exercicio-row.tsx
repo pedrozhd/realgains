@@ -38,8 +38,8 @@ export function TreinoExercicioRow({
   const [confirmandoRemocao, setConfirmandoRemocao] = useState(false);
 
   return (
-    <div className="shadow-soft-subtle flex flex-col gap-1.5 rounded-[10px] bg-background px-2.5 py-2">
-      <div className="flex items-center gap-2">
+    <div className="shadow-soft-subtle flex flex-col gap-1.5 rounded-xl bg-background px-3.5 py-2.5">
+      <div className="flex items-center gap-2.5">
         <button
           type="button"
           aria-label="Arrastar para reordenar"
@@ -53,7 +53,7 @@ export function TreinoExercicioRow({
           value={nome}
           onCommit={onRename}
           placeholder="Exercício"
-          className="h-auto min-w-0 flex-1 border-none bg-transparent px-0 py-1 text-sm font-semibold shadow-none focus-visible:ring-0"
+          className="h-auto min-w-0 flex-1 border-none bg-transparent px-0 py-1 text-sm font-semibold shadow-none focus-visible:ring-0 dark:bg-transparent"
         />
 
         {compartilhadoCom.length > 0 && (
@@ -75,7 +75,7 @@ export function TreinoExercicioRow({
         </button>
       </div>
 
-      <div className="flex items-center gap-1.5 pl-[22px] text-xs text-muted-foreground">
+      <div className="flex items-center gap-1.5 pl-[26px] text-xs text-muted-foreground">
         <BlurCommitInput
           value={numSeries ? String(numSeries) : ""}
           onCommit={(v) => onNumSeriesChange(Number(v) || 0)}

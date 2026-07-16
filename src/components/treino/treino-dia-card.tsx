@@ -77,7 +77,7 @@ export function TreinoDiaCard({
             onBlur={() => setEditandoNome(false)}
             placeholder="Nome do treino"
             autoFocus
-            className="h-auto flex-1 border-none bg-transparent px-0 py-1.5 text-[17px] font-bold shadow-none focus-visible:ring-0"
+            className="h-auto flex-1 border-none bg-transparent px-0 py-1.5 text-[17px] font-bold shadow-none focus-visible:ring-0 dark:bg-transparent"
           />
         ) : (
           <button
