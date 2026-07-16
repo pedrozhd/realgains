@@ -25,18 +25,12 @@ export function getUltimaSerie(seriesDoExercicio: Serie[]): Serie | null {
 }
 
 /**
- * "subiu" needs an increase vs the previous session. Absent that, we only
- * call it "estagnado" once carga has failed to move for 3 sessions running —
- * otherwise a single flat session would look identical to a real plateau.
- *
- * A "sessão" é um dia de treino, não uma série individual — várias séries no
- * mesmo dia (o caso comum: 3 séries do mesmo exercício numa sessão só) viram
- * uma sessão representada pela melhor série do dia. Sem esse agrupamento, o
- * primeiro dia de treino (com 3 séries de carga igual) já batia o critério de
- * "3 sessões sem subir" e virava "estagnado" antes mesmo de existir uma
- * segunda sessão de verdade.
+ * Agrupa séries por dia de treino (sessão) e reduz cada dia à sua melhor
+ * série (maior carga, empate por mais reps) — várias séries do mesmo
+ * exercício num mesmo dia (o caso comum: 3 séries numa sessão só) viram um
+ * único ponto por sessão. Ordenado do mais antigo pro mais recente.
  */
-export function getTendencia(seriesDoExercicio: Serie[]): Tendencia | null {
+function melhorSeriePorSessao(seriesDoExercicio: Serie[]): Serie[] {
   const seriesPorDia = new Map<string, Serie[]>();
   for (const s of seriesDoExercicio) {
     const dia = getDataLocalISO(new Date(s.data), APP_TIMEZONE);
@@ -45,9 +39,18 @@ export function getTendencia(seriesDoExercicio: Serie[]): Tendencia | null {
     else seriesPorDia.set(dia, [s]);
   }
 
-  const sessoes = [...seriesPorDia.entries()]
+  return [...seriesPorDia.entries()]
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([, doDia]) => [...doDia].sort((a, b) => b.carga - a.carga || b.reps - a.reps)[0]);
+}
+
+/**
+ * "subiu" needs an increase vs the previous session. Absent that, we only
+ * call it "estagnado" once carga has failed to move for 3 sessions running —
+ * otherwise a single flat session would look identical to a real plateau.
+ */
+export function getTendencia(seriesDoExercicio: Serie[]): Tendencia | null {
+  const sessoes = melhorSeriePorSessao(seriesDoExercicio);
 
   if (sessoes.length < 2) return null;
 
@@ -105,6 +108,44 @@ export function shouldSugerirProgressao(reps: number, repMax: number, qualidade:
   return reps >= repMax && qualidade === "boa";
 }
 
+export interface ExercicioEvolucao {
+  exercicioId: string;
+  nome: string;
+  volumeInicial: number;
+  volumeAtual: number;
+  deltaPercentual: number;
+}
+
+/**
+ * Exercício com o maior ganho percentual de volume (carga × reps da melhor
+ * série) entre a primeira e a sessão mais recente — mesma unidade que o
+ * Volume Semanal, então dá pra comparar exercícios de cargas bem diferentes
+ * (ex: Supino vs. Rosca) na mesma escala. Exige pelo menos 2 sessões; exclui
+ * exercícios cuja primeira sessão teve volume 0 (não dá pra calcular %).
+ */
+export function getExercicioMaisEvoluido(exercicios: Exercicio[], series: Serie[]): ExercicioEvolucao | null {
+  let melhor: ExercicioEvolucao | null = null;
+
+  for (const exercicio of exercicios) {
+    const seriesDoExercicio = series.filter((s) => s.exercicio_id === exercicio.id);
+    const sessoes = melhorSeriePorSessao(seriesDoExercicio);
+    if (sessoes.length < 2) continue;
+
+    const primeira = sessoes[0];
+    const ultima = sessoes[sessoes.length - 1];
+    const volumeInicial = primeira.carga * primeira.reps;
+    const volumeAtual = ultima.carga * ultima.reps;
+    if (volumeInicial <= 0) continue;
+
+    const deltaPercentual = ((volumeAtual - volumeInicial) / volumeInicial) * 100;
+    if (!melhor || deltaPercentual > melhor.deltaPercentual) {
+      melhor = { exercicioId: exercicio.id, nome: exercicio.nome, volumeInicial, volumeAtual, deltaPercentual };
+    }
+  }
+
+  return melhor;
+}
+
 export interface ResumoExercicio {
   nome: string;
   ultimaSerieLabel: string;
@@ -129,6 +170,7 @@ export interface DashboardVM {
   treino: { id: string; nome: string; totalExercicios: number } | null;
   exercicios: DashboardExercicioVM[];
   volumeSemanal: VolumeSemana[];
+  exercicioMaisEvoluido: ExercicioEvolucao | null;
 }
 
 export function getDashboardData(
@@ -139,7 +181,12 @@ export function getDashboardData(
 ): DashboardVM {
   const treinoDeHoje = getTreinoDeHoje(treinos);
   if (!treinoDeHoje) {
-    return { treino: null, exercicios: [], volumeSemanal: getVolumeSemanal(series) };
+    return {
+      treino: null,
+      exercicios: [],
+      volumeSemanal: getVolumeSemanal(series),
+      exercicioMaisEvoluido: getExercicioMaisEvoluido(exercicios, series),
+    };
   }
 
   const exerciciosDoTreino = treinoExercicios
@@ -164,5 +211,6 @@ export function getDashboardData(
     },
     exercicios: exerciciosVM,
     volumeSemanal: getVolumeSemanal(series),
+    exercicioMaisEvoluido: getExercicioMaisEvoluido(exercicios, series),
   };
 }

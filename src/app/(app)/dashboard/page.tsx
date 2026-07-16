@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/layout/app-header";
 import { AccountSheet } from "@/components/layout/account-sheet";
 import { Button } from "@/components/ui/button";
 import { ExercicioGrid } from "@/components/dashboard/exercicio-grid";
+import { ExercicioMaisEvoluidoCard } from "@/components/dashboard/exercicio-mais-evoluido-card";
 import { TreinoDeHojeCard } from "@/components/dashboard/treino-de-hoje-card";
 import { VolumeSemanalCard } from "@/components/dashboard/volume-semanal-card";
 import { SoftCard } from "@/components/ui/soft-card";
@@ -68,6 +69,7 @@ export default function DashboardPage() {
                   </SoftCard>
                 )}
                 <VolumeSemanalCard dados={dashboard.volumeSemanal} />
+                <ExercicioMaisEvoluidoCard dados={dashboard.exercicioMaisEvoluido} />
               </>
             );
           })()
