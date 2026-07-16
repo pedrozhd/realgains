@@ -64,7 +64,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col justify-center bg-background px-6 text-foreground">
+    <div className="relative mx-auto flex h-dvh w-full max-w-[430px] flex-col justify-center bg-background px-6 text-foreground">
       <div className="mb-8">
         <h1 className="text-3xl font-extrabold tracking-tight">RealGains</h1>
         <TypographyLead className="mt-1">
@@ -124,6 +124,10 @@ export default function LoginPage() {
       >
         {modo === "entrar" ? "Não tem conta? Criar conta" : "Já tem conta? Entrar"}
       </button>
+
+      <p className="absolute inset-x-0 bottom-6 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} RealGains. Todos os direitos reservados.
+      </p>
     </div>
   );
 }
