@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { Moon, Sun, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useTheme } from "@/lib/theme";
 
 const SHORTCUT_URL = "https://www.icloud.com/shortcuts/18a689496c094ec1a4391e4e4df70a60";
 
@@ -71,6 +72,7 @@ export function AppHeader({
   onAvatarClick,
 }: AppHeaderProps) {
   const [shortcutOpen, setShortcutOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   if (variant === "dashboard") {
     const inicial = userName.trim().charAt(0).toUpperCase();
@@ -81,6 +83,14 @@ export function AppHeader({
           <p className="mt-0.5 text-[13px] text-muted-foreground">Bora treinar hoje?</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro"}
+            className="shadow-soft-elevated flex h-10 w-10 items-center justify-center rounded-full bg-card text-primary"
+          >
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
           <button
             type="button"
             onClick={() => setShortcutOpen(true)}

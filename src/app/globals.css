@@ -93,6 +93,61 @@
   --sidebar-accent-foreground: #2a2d34;
   --sidebar-border: #dcdfe4;
   --sidebar-ring: #22c55e;
+  /* Cores-base das sombras soft UI (ver .shadow-soft-* mais abaixo) — soltas
+     em variáveis pra poderem ser trocadas no dark mode sem duplicar cada
+     classe de sombra. */
+  --shadow-soft-hi: rgba(255, 255, 255, 0.8);
+  --shadow-soft-hi-subtle: rgba(255, 255, 255, 0.6);
+  --shadow-soft-lo: rgba(163, 177, 198, 0.5);
+  --shadow-soft-lo-subtle: rgba(163, 177, 198, 0.35);
+}
+
+.dark {
+  --background: #15171b;
+  --foreground: #e7e9ec;
+  --card: #15171b;
+  --card-foreground: #e7e9ec;
+  --popover: #15171b;
+  --popover-foreground: #e7e9ec;
+  --primary: #22c55e;
+  --primary-foreground: #0b1210;
+  --secondary: #1f2227;
+  --secondary-foreground: #e7e9ec;
+  --muted: #1f2227;
+  --muted-foreground: #8b93a1;
+  --accent: #1f2227;
+  --accent-foreground: #e7e9ec;
+  --destructive: #f87171;
+  --destructive-foreground: #1a1112;
+  --success: #22c55e;
+  --success-foreground: #0b1210;
+  --warning: #f59e0b;
+  --warning-foreground: #1a1508;
+  --info: #38bdf8;
+  --info-foreground: #06171f;
+  --border: #2a2d33;
+  --input: #33363d;
+  --ring: #22c55e;
+  --chart-1: #e7e9ec;
+  --chart-2: #9aa1ac;
+  --chart-3: #6b7280;
+  --chart-4: #454952;
+  --chart-5: #2a2d33;
+  --sidebar: #15171b;
+  --sidebar-foreground: #e7e9ec;
+  --sidebar-primary: #22c55e;
+  --sidebar-primary-foreground: #0b1210;
+  --sidebar-accent: #1f2227;
+  --sidebar-accent-foreground: #e7e9ec;
+  --sidebar-border: #2a2d33;
+  --sidebar-ring: #22c55e;
+  /* Neumorfismo claro depende de um realce quase branco; no escuro isso
+     estouraria, então o realce vira um cinza bem mais próximo do próprio
+     fundo e a sombra vira preto puro pra manter a mesma sensação de relevo. */
+  --shadow-soft-hi: rgba(255, 255, 255, 0.04);
+  --shadow-soft-hi-subtle: rgba(255, 255, 255, 0.025);
+  --shadow-soft-lo: rgba(0, 0, 0, 0.6);
+  --shadow-soft-lo-subtle: rgba(0, 0, 0, 0.45);
 }
 
 @theme inline {
@@ -134,14 +189,14 @@
    levemente encaixado (ex: aba ativa da bottom nav). */
 .shadow-soft-elevated {
   box-shadow:
-    -8px -8px 16px rgba(255, 255, 255, 0.8),
-    8px 8px 16px rgba(163, 177, 198, 0.5);
+    -8px -8px 16px var(--shadow-soft-hi),
+    8px 8px 16px var(--shadow-soft-lo);
 }
 
 .shadow-soft-subtle {
   box-shadow:
-    -3px -3px 8px rgba(255, 255, 255, 0.6),
-    3px 3px 8px rgba(163, 177, 198, 0.35);
+    -3px -3px 8px var(--shadow-soft-hi-subtle),
+    3px 3px 8px var(--shadow-soft-lo-subtle);
 }
 
 /* Grade decorativa da LP (hero) — linhas finas que somem nas bordas via
@@ -157,8 +212,8 @@
 
 .shadow-soft-pressed {
   box-shadow:
-    inset 4px 4px 8px rgba(163, 177, 198, 0.5),
-    inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    inset 4px 4px 8px var(--shadow-soft-lo),
+    inset -4px -4px 8px var(--shadow-soft-hi);
 }
 
 @keyframes rg-toast {

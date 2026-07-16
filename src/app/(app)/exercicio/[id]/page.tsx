@@ -83,11 +83,11 @@ export default function ExercicioHistoricoPage() {
                     <Tooltip
                       cursor={false}
                       contentStyle={{
-                        background: "#ffffff",
-                        border: "1px solid #dcdfe4",
+                        background: "var(--popover)",
+                        border: "1px solid var(--border)",
                         borderRadius: 8,
                         fontSize: 12,
-                        color: "#2a2d34",
+                        color: "var(--popover-foreground)",
                       }}
                       labelFormatter={(value) => formatDataSerie(String(value))}
                       formatter={(value) => [`${formatCarga(Number(value ?? 0))} kg`, "Carga"]}
