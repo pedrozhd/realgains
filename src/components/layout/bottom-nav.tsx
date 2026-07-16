@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CirclePlus, Dumbbell, History, LayoutGrid } from "lucide-react";
+import { useAppStore } from "@/lib/store";
 
 const TABS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
@@ -13,6 +14,7 @@ const TABS = [
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { refresh } = useAppStore();
 
   return (
     // No fluxo normal (reserva sua própria linha) — testado em dispositivo
@@ -33,6 +35,12 @@ export function BottomNav() {
             <Link
               key={href}
               href={href}
+              // Clicar na aba em que já se está não navega pra lugar nenhum
+              // (é a mesma URL), então sem isso o toque parecia não fazer
+              // nada — em vez disso, rebusca os dados na hora.
+              onClick={() => {
+                if (active) refresh();
+              }}
               className={`flex flex-col items-center gap-0.5 rounded-2xl py-2 active:opacity-70 ${
                 active ? "shadow-soft-pressed bg-background" : ""
               }`}

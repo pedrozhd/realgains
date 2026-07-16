@@ -45,6 +45,8 @@ interface AppStoreValue extends AppDb {
   reordenarExerciciosDoTreino: (treinoExercicioIdsEmOrdem: string[]) => Promise<void>;
   setTreinoDoDia: (diaSemana: number, treinoId: string | null) => Promise<void>;
   updateNome: (nome: string) => Promise<void>;
+  /** Rebusca as quatro tabelas do Supabase — usado pra atualizar a tela sem dar F5. */
+  refresh: () => Promise<void>;
 }
 
 const AppStoreContext = createContext<AppStoreValue | null>(null);
@@ -257,6 +259,8 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         await supabase.from("profiles").update({ nome: novoNome }).eq("id", userId).throwOnError();
         await refresh();
       },
+
+      refresh,
     }),
     [db, loading, userEmail, nome, userId, refresh, supabase],
   );
