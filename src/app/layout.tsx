@@ -13,20 +13,18 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef0f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#15171b" },
-  ],
+  themeColor: "#15171b",
 };
 
 // Roda antes da hidratação pra aplicar a classe "dark" no <html> de cara —
 // sem isso, a página sempre pisca no tema claro por um instante (o React só
-// saberia o tema certo depois de montar o ThemeProvider).
+// saberia o tema certo depois de montar o ThemeProvider). Escuro é o padrão
+// enquanto o usuário não escolher manualmente (ver botão no cabeçalho do
+// Dashboard) — não segue mais a preferência do sistema.
 const THEME_INIT_SCRIPT = `
 (function () {
   try {
-    var tema = localStorage.getItem("realgains-theme");
-    if (!tema) tema = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    var tema = localStorage.getItem("realgains-theme") || "dark";
     if (tema === "dark") document.documentElement.classList.add("dark");
   } catch (e) {}
 })();

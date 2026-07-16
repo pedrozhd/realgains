@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
 
 export type Theme = "light" | "dark";
 
@@ -19,7 +19,8 @@ function applyTheme(theme: Theme) {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   // O <html> já chega com a classe certa (script inline no <head>, antes da
-  // hidratação) — aqui só espelhamos isso pro estado do React.
+  // hidratação, que também decide o padrão — hoje "dark" na ausência de
+  // escolha salva) — aqui só espelhamos isso pro estado do React.
   const [theme, setTheme] = useState<Theme>(() =>
     typeof document !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light",
   );
@@ -31,20 +32,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       applyTheme(proximo);
       return proximo;
     });
-  }, []);
-
-  // Segue a preferência do sistema em tempo real, mas só enquanto o usuário
-  // nunca escolheu manualmente um tema nesse navegador.
-  useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      const proximo = mq.matches ? "dark" : "light";
-      applyTheme(proximo);
-      setTheme(proximo);
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
   }, []);
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
