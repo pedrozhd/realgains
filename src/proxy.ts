@@ -13,6 +13,6 @@ export const config = {
   // landing (modelo .glb + decoder Draco) — sem essa exclusão, um visitante
   // sem sessão era redirecionado pro /login ao tentar baixá-los.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|api|auth|models|draco|.*\\.(?:svg|png|jpg|jpeg|gif|webp|glb|wasm)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api|auth|models/|draco/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|glb|wasm)$).*)",
   ],
 };

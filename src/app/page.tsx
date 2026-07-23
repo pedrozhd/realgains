@@ -38,6 +38,8 @@ export default function LandingPage() {
         </Link>
       </header>
 
+      <h1 className="sr-only">RealGains — Progressão de carga, sem planilha.</h1>
+
       {/* Experiência 3D (ou fallback estático em reduced-motion) */}
       <LandingHero />
 
@@ -67,7 +69,7 @@ export default function LandingPage() {
             {BENEFICIOS.map((b) => (
               <div key={b.titulo}>
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-border text-primary">
-                  <b.icon size={20} />
+                  <b.icon size={20} aria-hidden="true" />
                 </span>
                 <h3 className="mt-4 text-[15px] font-bold tracking-tight">{b.titulo}</h3>
                 <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">{b.descricao}</p>
@@ -88,7 +90,7 @@ export default function LandingPage() {
             <ul className="mt-6 flex flex-col gap-2.5 text-[14px]">
               {BENEFICIOS_BETA.map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <span className="text-primary">✓</span>
+                  <span className="text-primary" aria-hidden="true">✓</span>
                   {item}
                 </li>
               ))}
