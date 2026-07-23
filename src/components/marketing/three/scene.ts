@@ -52,7 +52,7 @@ export async function initScene(
   scene.fog = new THREE.Fog(0x08090b, 8, 16);
 
   const camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 0, 6.5);
+  camera.position.set(0, 0, 5.6);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -92,7 +92,9 @@ export async function initScene(
 
   model.scale.setScalar(scale);
   model.position.sub(center.multiplyScalar(scale));
-  model.rotation.set(0.06, 0.35, 0);
+  // Praticamente reto no painel inicial (antes do usuário rolar) — só uma
+  // inclinação bem sutil pra luz não bater chapada.
+  model.rotation.set(0.02, 0.08, 0);
 
   restyleMaterials(model);
   applyScreenMockup(model, renderer.capabilities.getMaxAnisotropy());

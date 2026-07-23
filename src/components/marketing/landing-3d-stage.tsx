@@ -41,20 +41,26 @@ export default function LandingStage() {
         setCarregado(true);
 
         const { camera, model } = scene;
-        model.position.x += 0.4;
+        // Painel 0 tem texto alinhado à esquerda dentro do container
+        // centralizado (mx-auto max-w-6xl) — o celular fica no lado oposto
+        // (direita), com folga maior pra não sobrar espaço morto na borda.
+        model.position.x += 0.9;
 
         ctx.add(() => {
           // Timeline do giro/translação do iPhone, atrelada ao scroll do palco.
+          // Os alvos de x alternam de lado acompanhando o alinhamento do texto
+          // de cada painel (esquerda → direita → esquerda → direita), sempre
+          // deixando o celular no lado oposto ao texto com folga.
           const tl = gsap.timeline({
             scrollTrigger: { trigger: stage, start: "top top", end: "bottom bottom", scrub: 1 },
           });
           tl.to(model.rotation, { y: -0.5, x: -0.05, duration: 1 }, 0)
-            .to(model.position, { x: -0.5, duration: 1 }, 0)
+            .to(model.position, { x: -1.0, duration: 1 }, 0)
             .to(model.rotation, { y: 0.55, x: -0.18, duration: 1 }, 1)
-            .to(model.position, { x: 0.55, y: -0.05, duration: 1 }, 1)
+            .to(model.position, { x: 1.1, y: -0.05, duration: 1 }, 1)
             .to(camera.position, { z: 4.6, duration: 1 }, 1)
             .to(model.rotation, { y: -0.6, x: 0.05, duration: 1 }, 2)
-            .to(model.position, { x: -0.45, y: 0, duration: 1 }, 2)
+            .to(model.position, { x: -1.0, y: 0, duration: 1 }, 2)
             .to(camera.position, { z: 6.2, duration: 1 }, 2);
 
           // Barra de progresso do scroll.
