@@ -286,7 +286,6 @@
 .rg-panel[data-panel="3"] { top: 300vh; }
 .rg-panel__inner {
   max-width: 560px;
-  padding: 0 6vw;
   opacity: 0;
   transform: translateY(24px);
 }

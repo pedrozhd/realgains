@@ -118,32 +118,34 @@ export default function LandingStage() {
 
         {PAINEIS.map((p, i) => (
           <div key={i} className="rg-panel" data-panel={i}>
-            <div className={`rg-panel__inner${p.align === "right" ? " rg-panel__inner--right" : ""}`}>
-              <p className="mb-4 text-xs font-semibold tracking-[0.14em] text-primary uppercase">{p.eyebrow}</p>
-              <h2 className="mb-5 text-[clamp(2rem,5vw,4rem)] leading-[1.02] font-bold tracking-tight whitespace-pre-line">
-                {p.headline}
-              </h2>
-              {p.lede && (
-                <p className="max-w-[34ch] text-[1.05rem] leading-relaxed text-muted-foreground">{p.lede}</p>
-              )}
-              {p.stats && (
-                <div className="mt-4 flex justify-end gap-12">
-                  {p.stats.map((s) => (
-                    <div key={s.label} className="flex flex-col items-end">
-                      <span className="text-4xl font-bold tracking-tight text-primary">{s.num}</span>
-                      <span className="text-xs tracking-[0.06em] text-muted-foreground uppercase">{s.label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {p.hint && (
-                <div className="mt-14 flex items-center gap-3 text-[0.7rem] tracking-[0.1em] text-muted-foreground uppercase">
-                  <span>role para explorar</span>
-                  <span className="relative block h-px w-10 overflow-hidden bg-muted-foreground">
-                    <span className="absolute inset-0 bg-primary [animation:rg-scroll-line_1.6s_ease-in-out_infinite]" />
-                  </span>
-                </div>
-              )}
+            <div className="mx-auto flex w-full max-w-6xl px-6">
+              <div className={`rg-panel__inner${p.align === "right" ? " rg-panel__inner--right" : ""}`}>
+                <p className="mb-4 text-xs font-semibold tracking-[0.14em] text-primary uppercase">{p.eyebrow}</p>
+                <h2 className="mb-5 text-[clamp(2rem,5vw,4rem)] leading-[1.02] font-bold tracking-tight whitespace-pre-line">
+                  {p.headline}
+                </h2>
+                {p.lede && (
+                  <p className="max-w-[34ch] text-[1.05rem] leading-relaxed text-muted-foreground">{p.lede}</p>
+                )}
+                {p.stats && (
+                  <div className="mt-4 flex justify-end gap-12">
+                    {p.stats.map((s) => (
+                      <div key={s.label} className="flex flex-col items-end">
+                        <span className="text-4xl font-bold tracking-tight text-primary">{s.num}</span>
+                        <span className="text-xs tracking-[0.06em] text-muted-foreground uppercase">{s.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {p.hint && (
+                  <div className="mt-14 flex items-center gap-3 text-[0.7rem] tracking-[0.1em] text-muted-foreground uppercase">
+                    <span>role para explorar</span>
+                    <span className="relative block h-px w-10 overflow-hidden bg-muted-foreground">
+                      <span className="absolute inset-0 bg-primary [animation:rg-scroll-line_1.6s_ease-in-out_infinite]" />
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         ))}
