@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/layout/app-header";
 import { AccountSheet } from "@/components/layout/account-sheet";
 import { Button } from "@/components/ui/button";
+import { ExercicioEmFocoCard } from "@/components/dashboard/exercicio-em-foco-card";
 import { ExercicioGrid } from "@/components/dashboard/exercicio-grid";
 import { ExercicioMaisEvoluidoCard } from "@/components/dashboard/exercicio-mais-evoluido-card";
 import { TreinoDeHojeCard } from "@/components/dashboard/treino-de-hoje-card";
@@ -69,7 +70,18 @@ export default function DashboardPage() {
                   </SoftCard>
                 )}
                 <VolumeSemanalCard dados={dashboard.volumeSemanal} />
-                <ExercicioMaisEvoluidoCard dados={dashboard.exercicioMaisEvoluido} />
+                {dashboard.treino ? (
+                  dashboard.exercicioEmFoco ? (
+                    <ExercicioEmFocoCard dados={dashboard.exercicioEmFoco} />
+                  ) : (
+                    <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
+                      <TypographyH4>Treino de hoje concluído 💪</TypographyH4>
+                      <TypographyMuted>Você bateu todas as séries de hoje. Bom trabalho.</TypographyMuted>
+                    </SoftCard>
+                  )
+                ) : (
+                  <ExercicioMaisEvoluidoCard dados={dashboard.exercicioMaisEvoluido} />
+                )}
               </>
             );
           })()
