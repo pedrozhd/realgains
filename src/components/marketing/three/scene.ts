@@ -95,7 +95,7 @@ export async function initScene(
   model.rotation.set(0.06, 0.35, 0);
 
   restyleMaterials(model);
-  applyScreenMockup(model);
+  applyScreenMockup(model, renderer.capabilities.getMaxAnisotropy());
   scene.add(model);
 
   const onResize = () => {

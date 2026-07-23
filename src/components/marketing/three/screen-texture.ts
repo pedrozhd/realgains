@@ -3,6 +3,11 @@ import * as THREE from "three";
 const SCREEN_MESH_NAME = "baf05346569e3be49c2a";
 const W = 640;
 const H = 1440;
+// A malha da tela amplia essa textura no 3D — sem essa folga de resolução
+// (e o ctx.scale abaixo) o texto sai borrado. 2x (1280x2880) é suficiente
+// pro tamanho que o celular ocupa na cena sem chegar perto do limite de
+// textura de GPUs mais antigas (tipicamente 4096px por lado).
+const CANVAS_SCALE = 2;
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -191,7 +196,7 @@ function normalizeUVs(geometry: THREE.BufferGeometry) {
   uv.needsUpdate = true;
 }
 
-export function applyScreenMockup(model: THREE.Object3D) {
+export function applyScreenMockup(model: THREE.Object3D, maxAnisotropy = 1) {
   let screenMesh: THREE.Mesh | null = null;
   model.traverse((child) => {
     if ((child as THREE.Mesh).isMesh && child.name === SCREEN_MESH_NAME) {
@@ -204,15 +209,20 @@ export function applyScreenMockup(model: THREE.Object3D) {
   normalizeUVs(mesh.geometry as THREE.BufferGeometry);
 
   const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
+  canvas.width = W * CANVAS_SCALE;
+  canvas.height = H * CANVAS_SCALE;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
+  // Desenha em coordenadas "lógicas" (640x1440); o scale faz o traço real
+  // sair na resolução mais alta do canvas sem reescrever drawMockup.
+  ctx.scale(CANVAS_SCALE, CANVAS_SCALE);
   drawMockup(ctx);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.flipY = false;
+  // Reduz o borrão em ângulos oblíquos (o celular é visto de lado na cena).
+  texture.anisotropy = maxAnisotropy;
 
   const mat = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material) as THREE.MeshStandardMaterial;
   mat.map = texture;
