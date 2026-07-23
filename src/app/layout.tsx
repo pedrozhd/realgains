@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { satoshi } from "./fonts";
-import { ThemeInitScript, ThemeProvider } from "@/lib/theme";
+import { ThemeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#15171b",
+  themeColor: "#08090b",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${satoshi.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-background">
         <ThemeInitScript />
-        <ThemeProvider>{children}</ThemeProvider>
+        {children}
       </body>
     </html>
   );
