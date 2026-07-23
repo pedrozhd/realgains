@@ -103,47 +103,45 @@
 }
 
 .dark {
-  --background: #15171b;
-  --foreground: #e7e9ec;
-  --card: #15171b;
-  --card-foreground: #e7e9ec;
-  --popover: #15171b;
-  --popover-foreground: #e7e9ec;
-  --primary: #22c55e;
-  --primary-foreground: #0b1210;
-  --secondary: #1f2227;
-  --secondary-foreground: #e7e9ec;
-  --muted: #1f2227;
-  --muted-foreground: #8b93a1;
-  --accent: #1f2227;
-  --accent-foreground: #e7e9ec;
+  --background: #08090b;
+  --foreground: #ededed;
+  --card: #111317;
+  --card-foreground: #ededed;
+  --popover: #111317;
+  --popover-foreground: #ededed;
+  --primary: #d6ff3f;
+  --primary-foreground: #08090b;
+  --secondary: #16181c;
+  --secondary-foreground: #ededed;
+  --muted: #16181c;
+  --muted-foreground: #8a8f94;
+  --accent: #16181c;
+  --accent-foreground: #ededed;
   --destructive: #f87171;
   --destructive-foreground: #1a1112;
-  --success: #22c55e;
-  --success-foreground: #0b1210;
+  --success: #d6ff3f;
+  --success-foreground: #08090b;
   --warning: #f59e0b;
   --warning-foreground: #1a1508;
   --info: #38bdf8;
   --info-foreground: #06171f;
-  --border: #2a2d33;
-  --input: #33363d;
-  --ring: #22c55e;
-  --chart-1: #e7e9ec;
-  --chart-2: #9aa1ac;
-  --chart-3: #6b7280;
-  --chart-4: #454952;
-  --chart-5: #2a2d33;
-  --sidebar: #15171b;
-  --sidebar-foreground: #e7e9ec;
-  --sidebar-primary: #22c55e;
-  --sidebar-primary-foreground: #0b1210;
-  --sidebar-accent: #1f2227;
-  --sidebar-accent-foreground: #e7e9ec;
-  --sidebar-border: #2a2d33;
-  --sidebar-ring: #22c55e;
-  /* Neumorfismo claro depende de um realce quase branco; no escuro isso
-     estouraria, então o realce vira um cinza bem mais próximo do próprio
-     fundo e a sombra vira preto puro pra manter a mesma sensação de relevo. */
+  --border: #23262b;
+  --input: #2a2d33;
+  --ring: #d6ff3f;
+  --chart-1: #d6ff3f;
+  --chart-2: #8a8f94;
+  --chart-3: #5a6068;
+  --chart-4: #3a3e45;
+  --chart-5: #23262b;
+  --sidebar: #08090b;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #d6ff3f;
+  --sidebar-primary-foreground: #08090b;
+  --sidebar-accent: #16181c;
+  --sidebar-accent-foreground: #ededed;
+  --sidebar-border: #23262b;
+  --sidebar-ring: #d6ff3f;
+  /* Neumorfismo escuro: realce quase imperceptível + sombra preta. Mantido. */
   --shadow-soft-hi: rgba(255, 255, 255, 0.04);
   --shadow-soft-hi-subtle: rgba(255, 255, 255, 0.025);
   --shadow-soft-lo: rgba(0, 0, 0, 0.6);
@@ -171,6 +169,12 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
   ::-webkit-scrollbar {
     display: none;
@@ -264,4 +268,95 @@
 
 .animate-spin-around {
   animation: spin-around calc(var(--speed, 3s) * 2) infinite linear;
+}
+
+/* ===== Landing 3D (scroll-driven) ===== */
+.rg-stage {
+  position: relative;
+  height: 400vh;
+}
+.rg-canvas {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: block;
+}
+.rg-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.rg-panel[data-panel="0"] { top: 0; }
+.rg-panel[data-panel="1"] { top: 100vh; }
+.rg-panel[data-panel="2"] { top: 200vh; }
+.rg-panel[data-panel="3"] { top: 300vh; }
+.rg-panel__inner {
+  max-width: 560px;
+  padding: 0 6vw;
+  opacity: 0;
+  transform: translateY(24px);
+}
+.rg-panel__inner--right {
+  margin-left: auto;
+  text-align: right;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Loader */
+.rg-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+.rg-loader__word {
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: var(--muted-foreground);
+}
+.rg-loader__bar {
+  width: 160px;
+  height: 2px;
+  background: var(--border);
+  overflow: hidden;
+  border-radius: 2px;
+}
+.rg-loader__bar-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--primary);
+}
+
+/* Indicador de progresso do scroll (barra fina no topo) */
+.rg-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 30;
+  background: transparent;
+  pointer-events: none;
+}
+.rg-scroll-progress__fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+}
+
+@keyframes rg-scroll-line {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
