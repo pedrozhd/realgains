@@ -146,6 +146,54 @@ export function getExercicioMaisEvoluido(exercicios: Exercicio[], series: Serie[
   return melhor;
 }
 
+const HISTORICO_EM_FOCO_MAX_SESSOES = 8;
+
+/** Quantas séries de `seriesDoExercicio` caem no dia civil `hojeISO` (fuso do app). */
+function contarSeriesNoDia(seriesDoExercicio: Serie[], hojeISO: string): number {
+  return seriesDoExercicio.filter((s) => getDataLocalISO(new Date(s.data), APP_TIMEZONE) === hojeISO).length;
+}
+
+export interface ExercicioEmFoco {
+  exercicioId: string;
+  nome: string;
+  /** Última carga conhecida (de hoje, se já houver série registrada, senão histórica). */
+  cargaAtual: number | null;
+  seriesHoje: number;
+  numSeries: number;
+  /** Até 8 sessões mais recentes, mais antiga primeiro. */
+  historico: { data: string; carga: number }[];
+}
+
+/**
+ * O primeiro exercício do treino de hoje (na ordem configurada) que ainda não
+ * bateu sua meta de séries hoje. `null` quando todos já bateram — quem chama
+ * distingue esse caso de "sem treino hoje" pelo próprio `dashboard.treino`.
+ */
+function getExercicioEmFoco(
+  exerciciosDoTreino: TreinoExercicio[],
+  exercicios: Exercicio[],
+  series: Serie[],
+  hojeISO: string,
+): ExercicioEmFoco | null {
+  for (const te of exerciciosDoTreino) {
+    const seriesDoExercicio = series.filter((s) => s.exercicio_id === te.exercicio_id);
+    const seriesHoje = contarSeriesNoDia(seriesDoExercicio, hojeISO);
+    if (seriesHoje >= te.num_series) continue;
+
+    const exercicio = exercicios.find((e) => e.id === te.exercicio_id);
+    const sessoes = melhorSeriePorSessao(seriesDoExercicio);
+    return {
+      exercicioId: te.exercicio_id,
+      nome: exercicio?.nome ?? "Exercício",
+      cargaAtual: getUltimaSerie(seriesDoExercicio)?.carga ?? null,
+      seriesHoje,
+      numSeries: te.num_series,
+      historico: sessoes.slice(-HISTORICO_EM_FOCO_MAX_SESSOES).map((s) => ({ data: s.data, carga: s.carga })),
+    };
+  }
+  return null;
+}
+
 export interface ResumoExercicio {
   nome: string;
   ultimaSerieLabel: string;
@@ -171,6 +219,7 @@ export interface DashboardVM {
   exercicios: DashboardExercicioVM[];
   volumeSemanal: VolumeSemana[];
   exercicioMaisEvoluido: ExercicioEvolucao | null;
+  exercicioEmFoco: ExercicioEmFoco | null;
 }
 
 export function getDashboardData(
@@ -178,14 +227,16 @@ export function getDashboardData(
   treinoExercicios: TreinoExercicio[],
   exercicios: Exercicio[],
   series: Serie[],
+  data: Date = new Date(),
 ): DashboardVM {
-  const treinoDeHoje = getTreinoDeHoje(treinos);
+  const treinoDeHoje = getTreinoDeHoje(treinos, data);
   if (!treinoDeHoje) {
     return {
       treino: null,
       exercicios: [],
       volumeSemanal: getVolumeSemanal(series),
       exercicioMaisEvoluido: getExercicioMaisEvoluido(exercicios, series),
+      exercicioEmFoco: null,
     };
   }
 
@@ -203,6 +254,8 @@ export function getDashboardData(
     };
   });
 
+  const hojeISO = getDataLocalISO(data, APP_TIMEZONE);
+
   return {
     treino: {
       id: treinoDeHoje.id,
@@ -212,5 +265,6 @@ export function getDashboardData(
     exercicios: exerciciosVM,
     volumeSemanal: getVolumeSemanal(series),
     exercicioMaisEvoluido: getExercicioMaisEvoluido(exercicios, series),
+    exercicioEmFoco: getExercicioEmFoco(exerciciosDoTreino, exercicios, series, hojeISO),
   };
 }
