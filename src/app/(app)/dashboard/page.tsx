@@ -9,7 +9,6 @@ import { ExercicioEmFocoCard } from "@/components/dashboard/exercicio-em-foco-ca
 import { ExercicioGrid } from "@/components/dashboard/exercicio-grid";
 import { ExercicioMaisEvoluidoCard } from "@/components/dashboard/exercicio-mais-evoluido-card";
 import { TreinoDeHojeCard } from "@/components/dashboard/treino-de-hoje-card";
-import { VolumeSemanalCard } from "@/components/dashboard/volume-semanal-card";
 import { SoftCard } from "@/components/ui/soft-card";
 import { TypographyH4, TypographyMuted } from "@/components/ui/typography";
 import { getDashboardData } from "@/lib/dashboard";
@@ -59,30 +58,28 @@ export default function DashboardPage() {
                 {dashboard.treino ? (
                   <>
                     <TreinoDeHojeCard treino={dashboard.treino} />
+                    {dashboard.exercicioEmFoco ? (
+                      <ExercicioEmFocoCard dados={dashboard.exercicioEmFoco} />
+                    ) : (
+                      <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
+                        <TypographyH4>Treino de hoje concluído 💪</TypographyH4>
+                        <TypographyMuted className="max-w-[28ch]">
+                          Você bateu todas as séries de hoje. Bom trabalho.
+                        </TypographyMuted>
+                      </SoftCard>
+                    )}
                     <ExercicioGrid exercicios={dashboard.exercicios} />
                   </>
                 ) : (
-                  <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
-                    <TypographyH4>Hoje é seu dia de descanso 🎉</TypographyH4>
-                    <TypographyMuted className="max-w-[28ch]">
-                      Nenhum treino está agendado para hoje. Ajuste sua semana em &ldquo;Meu Treino&rdquo;.
-                    </TypographyMuted>
-                  </SoftCard>
-                )}
-                <VolumeSemanalCard dados={dashboard.volumeSemanal} />
-                {dashboard.treino ? (
-                  dashboard.exercicioEmFoco ? (
-                    <ExercicioEmFocoCard dados={dashboard.exercicioEmFoco} />
-                  ) : (
+                  <>
                     <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
-                      <TypographyH4>Treino de hoje concluído 💪</TypographyH4>
+                      <TypographyH4>Hoje é seu dia de descanso 🎉</TypographyH4>
                       <TypographyMuted className="max-w-[28ch]">
-                        Você bateu todas as séries de hoje. Bom trabalho.
+                        Nenhum treino está agendado para hoje. Ajuste sua semana em &ldquo;Meu Treino&rdquo;.
                       </TypographyMuted>
                     </SoftCard>
-                  )
-                ) : (
-                  <ExercicioMaisEvoluidoCard dados={dashboard.exercicioMaisEvoluido} />
+                    <ExercicioMaisEvoluidoCard dados={dashboard.exercicioMaisEvoluido} />
+                  </>
                 )}
               </>
             );
