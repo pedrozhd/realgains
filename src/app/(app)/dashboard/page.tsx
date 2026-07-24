@@ -76,7 +76,9 @@ export default function DashboardPage() {
                   ) : (
                     <SoftCard className="flex flex-col items-center gap-1.5 p-6 text-center">
                       <TypographyH4>Treino de hoje concluído 💪</TypographyH4>
-                      <TypographyMuted>Você bateu todas as séries de hoje. Bom trabalho.</TypographyMuted>
+                      <TypographyMuted className="max-w-[28ch]">
+                        Você bateu todas as séries de hoje. Bom trabalho.
+                      </TypographyMuted>
                     </SoftCard>
                   )
                 ) : (
