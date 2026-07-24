@@ -31,6 +31,14 @@ export async function checkRateLimit(identifier: string): Promise<{ success: boo
 }
 
 export function clientIp(request: Request): string {
+  // x-real-ip é preenchido pela Vercel com o IP real da conexão e não pode ser
+  // forjado pelo cliente. x-forwarded-for pode vir com um valor inicial
+  // arbitrário enviado pelo cliente — a Vercel só *acrescenta* o IP real ao
+  // final da lista, então o último item (não o primeiro) é o confiável.
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+
   const forwardedFor = request.headers.get("x-forwarded-for");
-  return forwardedFor?.split(",")[0]?.trim() ?? "unknown";
+  const ips = forwardedFor?.split(",").map((ip) => ip.trim()).filter(Boolean);
+  return ips?.[ips.length - 1] ?? "unknown";
 }
