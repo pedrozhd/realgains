@@ -6,6 +6,12 @@ export interface PanelStat {
 export interface Panel {
   eyebrow: string;
   headline: string;
+  /** Só no painel com ciclo de palavra: tudo do headline antes da palavra que alterna. */
+  headlinePrefixo?: string;
+  /** Só no painel com ciclo de palavra: tudo do headline depois da palavra que alterna. */
+  headlineSufixo?: string;
+  /** Palavras que alternam a cada ~2s (GSAP) no lugar da última palavra do headline. */
+  cicloPalavras?: string[];
   lede?: string;
   align: "left" | "right";
   stats?: PanelStat[];
@@ -19,6 +25,9 @@ export const PAINEIS: Panel[] = [
   {
     eyebrow: "realgains",
     headline: "Cada treino,\num degrau.",
+    headlinePrefixo: "Cada treino,\num ",
+    headlineSufixo: ".",
+    cicloPalavras: ["degrau", "passo", "recorde", "avanço"],
     lede: "O app que transforma sua evolução na academia em números que fazem sentido.",
     align: "left",
     hint: true,

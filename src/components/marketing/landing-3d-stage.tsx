@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { initScene, type SceneHandle } from "./three/scene";
 import { PAINEIS } from "./landing-copy";
+import { CicloPalavra } from "./ciclo-palavra";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -128,7 +129,15 @@ export default function LandingStage() {
               <div className={`rg-panel__inner${p.align === "right" ? " rg-panel__inner--right" : ""}`}>
                 <p className="mb-4 text-xs font-semibold tracking-[0.14em] text-primary uppercase">{p.eyebrow}</p>
                 <h2 className="mb-5 text-[clamp(2rem,5vw,4rem)] leading-[1.02] font-bold tracking-tight whitespace-pre-line">
-                  {p.headline}
+                  {p.cicloPalavras && p.cicloPalavras.length > 0 ? (
+                    <>
+                      {p.headlinePrefixo}
+                      <CicloPalavra palavras={p.cicloPalavras} />
+                      {p.headlineSufixo}
+                    </>
+                  ) : (
+                    p.headline
+                  )}
                 </h2>
                 {p.lede && (
                   <p className="max-w-[34ch] text-[1.05rem] leading-relaxed text-muted-foreground">{p.lede}</p>
