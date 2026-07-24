@@ -1,12 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getTreinoDeHoje, getUltimaSerie } from "@/lib/dashboard";
 import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import type { Exercicio, Serie, Treino, TreinoExercicio } from "@/lib/types";
-
-function createAdminClient() {
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-}
 
 async function resolveUserId(admin: ReturnType<typeof createAdminClient>, token: string | null): Promise<string | null> {
   if (!token) return null;
