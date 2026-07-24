@@ -18,11 +18,11 @@ const BAR_GAP = 4;
 const MIN_BAR_HEIGHT = 3;
 
 /**
- * Gráfico de barras pequeno, irmão do Sparkline (mesma convenção de props),
- * mas como componente separado: a entrada "cresce de baixo" das barras é
- * diferente o bastante da revelação em clip-path de uma linha pra não valer
- * a pena um "modo barras" dentro do Sparkline. A última barra (mais recente)
- * sai destacada em `fill-primary`; as demais em tom neutro.
+ * Gráfico de barras pequeno, irmão do Sparkline (mesma convenção de props:
+ * `data`, `height`, `className`), mas sem a animação de entrada dele — barras
+ * são estáticas, o pouco que têm em comum (min/max/range) não justifica um
+ * "modo barras" dentro do Sparkline. A última barra (mais recente) sai
+ * destacada em `fill-primary`; as demais em tom neutro.
  */
 export function BarTrend({
   ariaLabel = "Gráfico de barras",
