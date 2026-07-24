@@ -113,7 +113,7 @@ export default function LandingStage() {
     <>
       {!carregado && (
         <div className="rg-loader" role="status">
-          <span className="rg-loader__word">REALGAINS</span>
+          <span className="rg-loader__word">TAPGYM</span>
           <div className="rg-loader__bar">
             <div className="rg-loader__bar-fill" style={{ width: `${progress}%` }} />
           </div>

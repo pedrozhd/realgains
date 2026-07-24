@@ -23,7 +23,7 @@ export interface Panel {
 // "\n" para quebras de linha intencionais.
 export const PAINEIS: Panel[] = [
   {
-    eyebrow: "realgains",
+    eyebrow: "tapgym",
     headline: "Cada treino,\num degrau.",
     headlinePrefixo: "Cada treino,\num ",
     headlineSufixo: ".",
@@ -41,7 +41,7 @@ export const PAINEIS: Panel[] = [
   {
     eyebrow: "progressão automática",
     headline: "Registre a carga.\nA gente calcula o resto.",
-    lede: "O RealGains acompanha cada série e mostra o próximo passo — sem achismo, sem estagnar.",
+    lede: "O TapGym acompanha cada série e mostra o próximo passo — sem achismo, sem estagnar.",
     align: "left",
   },
   {

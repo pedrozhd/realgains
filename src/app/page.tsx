@@ -29,7 +29,7 @@ export default function LandingPage() {
   return (
     <div className="bg-background text-foreground">
       <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 py-5 sm:px-8">
-        <span className="text-lg font-bold tracking-tight">RealGains</span>
+        <span className="text-lg font-bold tracking-tight">TapGym</span>
         <Link
           href="/dashboard"
           className="rounded-full border border-border px-4 py-2 text-[13px] font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
@@ -38,7 +38,7 @@ export default function LandingPage() {
         </Link>
       </header>
 
-      <h1 className="sr-only">RealGains — Progressão de carga, sem planilha.</h1>
+      <h1 className="sr-only">TapGym — Progressão de carga, sem planilha.</h1>
 
       {/* Experiência 3D (ou fallback estático em reduced-motion) */}
       <LandingHero />
@@ -63,7 +63,7 @@ export default function LandingPage() {
 
       <section className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
-          <p className="text-[12px] font-bold tracking-[0.14em] text-primary uppercase">Por que o RealGains</p>
+          <p className="text-[12px] font-bold tracking-[0.14em] text-primary uppercase">Por que o TapGym</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Feito pra usar dentro da academia.</h2>
           <div className="mt-12 grid gap-10 sm:grid-cols-2 md:grid-cols-3">
             {BENEFICIOS.map((b) => (
@@ -111,7 +111,7 @@ export default function LandingPage() {
             Sua próxima carga máxima começa aqui.
           </h2>
           <p className="mx-auto mt-4 max-w-[40ch] text-[15px] text-muted-foreground">
-            Entre na lista e seja avisado assim que o RealGains abrir.
+            Entre na lista e seja avisado assim que o TapGym abrir.
           </p>
           <WaitlistForm className="mx-auto mt-8 max-w-md" helperText="Sem spam. Um único e-mail quando o app abrir." />
         </div>
@@ -119,8 +119,8 @@ export default function LandingPage() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-1 px-6 py-10 text-center text-[13px] text-muted-foreground">
-          <span className="font-bold text-foreground">RealGains</span>
-          <span>© 2026 RealGains. Todos os direitos reservados.</span>
+          <span className="font-bold text-foreground">TapGym</span>
+          <span>© 2026 TapGym. Todos os direitos reservados.</span>
         </div>
       </footer>
     </div>

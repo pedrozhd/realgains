@@ -91,7 +91,7 @@ export default function LandingHero() {
           <div className="overflow-hidden rounded-[2rem] border border-border bg-card">
             <Image
               src="/marketing/dashboard-preview.png"
-              alt="Tela inicial do RealGains com o treino do dia e o volume semanal"
+              alt="Tela inicial do TapGym com o treino do dia e o volume semanal"
               width={390}
               height={844}
               className="h-auto w-full"

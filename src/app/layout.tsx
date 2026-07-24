@@ -4,7 +4,7 @@ import { ThemeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "RealGains",
+  title: "TapGym",
   description: "Progressão de carga com foco em qualidade de execução",
 };
 

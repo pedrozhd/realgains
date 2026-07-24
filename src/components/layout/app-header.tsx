@@ -22,7 +22,7 @@ function ShortcutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[340px] rounded-2xl bg-card">
         <DialogHeader>
-          <DialogTitle>Atalho do RealGains</DialogTitle>
+          <DialogTitle>Atalho do TapGym</DialogTitle>
         </DialogHeader>
         <p className="rounded-xl bg-background px-3 py-2.5 text-[13px] leading-relaxed text-muted-foreground">
           Antes de usar, cadastre pelo menos um treino na aba &ldquo;Meu Treino&rdquo; e defina sua semana. Sem
@@ -34,7 +34,7 @@ function ShortcutDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
             o app Atalhos do iPhone.
           </li>
           <li>
-            <strong className="text-foreground">2.</strong> No RealGains, toque no seu avatar → &ldquo;Token do
+            <strong className="text-foreground">2.</strong> No TapGym, toque no seu avatar → &ldquo;Token do
             Shortcut&rdquo; → Copiar.
           </li>
           <li>

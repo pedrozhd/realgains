@@ -68,7 +68,7 @@ function drawMockup(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = "#ffffff";
   ctx.font = "700 30px -apple-system, Segoe UI, sans-serif";
   ctx.textAlign = "left";
-  ctx.fillText("RealGains", 36, 130);
+  ctx.fillText("TapGym", 36, 130);
 
   ctx.strokeStyle = "rgba(237,237,237,0.15)";
   ctx.lineWidth = 1.5;

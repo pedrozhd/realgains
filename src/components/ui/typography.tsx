@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /**
  * Escala tipográfica do app, seguindo a mesma lógica do padrão de Typography
  * do shadcn/ui (pesos e tracking por nível), mas calibrada pro tamanho de
- * tela mobile do RealGains em vez dos tamanhos de blog do exemplo original
+ * tela mobile do TapGym em vez dos tamanhos de blog do exemplo original
  * (h1 de 36px não cabe num header de app; aqui o maior título é 22-26px).
  */
 

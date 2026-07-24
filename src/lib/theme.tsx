@@ -1,4 +1,4 @@
-const STORAGE_KEY = "realgains-theme";
+const STORAGE_KEY = "tapgym-theme";
 
 /**
  * O app é dark-only (não há mais toggle). Este script roda antes da hidratação
