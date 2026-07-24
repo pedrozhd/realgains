@@ -49,18 +49,22 @@ export default function LandingStage() {
 
         ctx.add(() => {
           // Timeline do giro/translação do iPhone, atrelada ao scroll do palco.
-          // Os alvos de x alternam de lado acompanhando o alinhamento do texto
-          // de cada painel (esquerda → direita → esquerda → direita), sempre
-          // deixando o celular no lado oposto ao texto com folga.
+          // Os alvos de x (posição) alternam de lado acompanhando o alinhamento
+          // do texto de cada painel, sempre deixando o celular no lado oposto
+          // ao texto com folga. O giro em y (rotação), diferente da posição,
+          // NÃO alterna de sinal — segue sempre no mesmo sentido, virando cada
+          // vez mais, pra passar de raspão pelas costas no painel 2 e completar
+          // a volta (desvirar) até o painel 3, em vez de balançar pros dois
+          // lados sem nunca sair de frente.
           const tl = gsap.timeline({
             scrollTrigger: { trigger: stage, start: "top top", end: "bottom bottom", scrub: 1 },
           });
-          tl.to(model.rotation, { y: -0.5, x: -0.05, duration: 1 }, 0)
+          tl.to(model.rotation, { y: -1.45, x: -0.05, duration: 1 }, 0)
             .to(model.position, { x: -1.0, duration: 1 }, 0)
-            .to(model.rotation, { y: 0.55, x: -0.18, duration: 1 }, 1)
+            .to(model.rotation, { y: -(Math.PI + 0.15), x: -0.18, duration: 1 }, 1)
             .to(model.position, { x: 1.1, y: -0.05, duration: 1 }, 1)
             .to(camera.position, { z: 4.6, duration: 1 }, 1)
-            .to(model.rotation, { y: -0.6, x: 0.05, duration: 1 }, 2)
+            .to(model.rotation, { y: -(2 * Math.PI + 0.6), x: 0.05, duration: 1 }, 2)
             .to(model.position, { x: -1.0, y: 0, duration: 1 }, 2)
             .to(camera.position, { z: 6.2, duration: 1 }, 2);
 
