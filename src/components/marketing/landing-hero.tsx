@@ -67,13 +67,19 @@ export default function LandingHero() {
   if (ehMobile) {
     // Mobile: sem celular — nem o palco 3D, nem o mockup estático. A cena foi
     // calibrada pra proporção larga do desktop e não cabe num viewport
-    // estreito sem sobrepor o texto. Só o texto dos painéis, centralizado.
+    // estreito sem sobrepor o texto. Cada painel vira sua própria seção
+    // (border-t entre elas, mesma convenção das seções abaixo na página) pra
+    // não parecer um bloco só de texto contínuo.
     return (
-      <section className="mx-auto grid max-w-xl gap-12 px-6 py-16 text-center">
+      <>
         {PAINEIS.map((p, i) => (
-          <PainelResumo key={i} p={p} align="center" />
+          <section key={i} className={cn(i > 0 && "border-t border-border")}>
+            <div className="mx-auto max-w-xl px-6 py-16 text-center md:py-20">
+              <PainelResumo p={p} align="center" />
+            </div>
+          </section>
         ))}
-      </section>
+      </>
     );
   }
 
