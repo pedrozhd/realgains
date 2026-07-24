@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getTreinoDeHoje, getUltimaSerie } from "@/lib/dashboard";
+import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import type { Exercicio, Serie, Treino, TreinoExercicio } from "@/lib/types";
 
 function createAdminClient() {
@@ -19,6 +20,11 @@ async function resolveUserId(admin: ReturnType<typeof createAdminClient>, token:
  * aqui para o user_id porque a rota usa a service role key, que ignora RLS.
  */
 export async function GET(request: NextRequest) {
+  const { success } = await checkRateLimit(clientIp(request));
+  if (!success) {
+    return NextResponse.json({ error: "muitas requisições, tente novamente em instantes" }, { status: 429 });
+  }
+
   const token = request.nextUrl.searchParams.get("token");
   const admin = createAdminClient();
   const userId = await resolveUserId(admin, token);

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import type { Qualidade } from "@/lib/types";
 
 function createAdminClient() {
@@ -26,6 +27,11 @@ interface RegistrarBody {
  * uma série em um exercício de outro usuário.
  */
 export async function POST(request: NextRequest) {
+  const { success } = await checkRateLimit(clientIp(request));
+  if (!success) {
+    return NextResponse.json({ error: "muitas requisições, tente novamente em instantes" }, { status: 429 });
+  }
+
   const body = (await request.json().catch(() => null)) as Partial<RegistrarBody> | null;
 
   const carga = body?.carga != null ? Number(body.carga) : NaN;
